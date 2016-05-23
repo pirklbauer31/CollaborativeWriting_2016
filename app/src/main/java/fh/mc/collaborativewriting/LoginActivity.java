@@ -37,11 +37,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -80,6 +85,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
+
+    private boolean userExists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +144,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean valid=true;
         String email= mEmailView.getText().toString();
         String password= mPasswordView.getText().toString();
+
+
 
         if (email.isEmpty()) {
             mEmailView.setError(getString( R.string.error_field_required));
@@ -199,38 +208,68 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void createUserwithEmail() {
 
-        String email= mEmailView.getText().toString();
+        final String email= mEmailView.getText().toString();
         String password= mPasswordView.getText().toString();
+
+        userExists=false;
 
         if (!validateEmailPassword()) {
             return;
         }
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+        checkIfUserExists();
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+
+        if (userExists == false) {
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                writeNewUser();
+                            }
                         }
-                        else {
-                            writeNewUser();
-                        }
+                    });
+        } else {
+            signInUserWithEmail();
+        }
+    }
+
+    private void checkIfUserExists() {
+        DatabaseReference myRef = mDatabase.getReference("users");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot user:
+                        dataSnapshot.getChildren()) {
+                    Log.d(TAG, (String) user.child("email").getValue());
+                    if ( mEmailView.getText().toString().equals( user.child("email").getValue()) ) {
+                        Log.d(TAG, "User exists");
+                        userExists=true;
                     }
-                });
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void writeNewUser() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // Name, email address, and profile photo Url
-
             String email = user.getEmail();
             String username= mUsernameView.getText().toString();
             String uid = user.getUid();

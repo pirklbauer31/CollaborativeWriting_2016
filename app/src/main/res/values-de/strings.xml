@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Collaborative Writing</string>
+    <string name="error_incorrect_password">Falsches Passwort</string>
+    <string name="error_invalid_email">Bitte geben Sie eine korrekte E-Mail Adresse an</string>
+    <string name="error_invalid_password">Zu kurzes Passwort</string>
+</resources>
