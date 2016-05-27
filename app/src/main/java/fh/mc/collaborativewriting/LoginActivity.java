@@ -244,19 +244,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void checkIfUserExists() {
+        String email=mEmailView.getText().toString();
+
+
         DatabaseReference myRef = mDatabase.getReference("users");
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        Query searchForUser= myRef.startAt(email).endAt(email);
+        searchForUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot user:
-                        dataSnapshot.getChildren()) {
-                    Log.d(TAG, (String) user.child("email").getValue());
-                    if ( mEmailView.getText().toString().equals( user.child("email").getValue()) ) {
-                        Log.d(TAG, "User exists");
-                        userExists=true;
-                    }
-                }
 
+                Log.d(TAG, (String) dataSnapshot.child("email").getValue());
+                if ( mEmailView.getText().toString().equals( dataSnapshot.child("email").getValue()) ) {
+                    Log.d(TAG, "User exists");
+                    userExists=true;
+                }
             }
 
             @Override
