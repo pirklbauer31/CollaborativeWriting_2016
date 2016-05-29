@@ -3,6 +3,7 @@ package fh.mc.collaborativewriting;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -34,7 +35,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,6 +48,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -104,6 +108,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    Intent i= new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(i);
                 } else {
                     // User is signed out
                     Log.d( TAG, "onAuthStateChanged:signed_out");
@@ -144,7 +150,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean valid=true;
         String email= mEmailView.getText().toString();
         String password= mPasswordView.getText().toString();
-
+        String username=mUsernameView.getText().toString();
 
 
         if (email.isEmpty()) {
@@ -164,6 +170,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mPasswordView.setError(getString( R.string.error_invalid_password));
             valid= false;
         }
+
+        if (username.isEmpty() ) {
+            mPasswordView.setError(getString( R.string.error_username_required));
+            valid= false;
+        }
+
         else {
             mPasswordView.setError(null);
         }
@@ -198,11 +210,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         else {
                             Toast.makeText(LoginActivity.this, "Signing in was successful!",
                                     Toast.LENGTH_SHORT).show();
+
                         }
 
                         // ...
                     }
                 });
+
+
 
     }
 
@@ -216,6 +231,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (!validateEmailPassword()) {
             return;
         }
+
 
         checkIfUserExists();
 
@@ -235,6 +251,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                         Toast.LENGTH_SHORT).show();
                             } else {
                                 writeNewUser();
+
                             }
                         }
                     });
@@ -245,26 +262,40 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void checkIfUserExists() {
         String email=mEmailView.getText().toString();
-
+        String username= mUsernameView.getText().toString();
 
         DatabaseReference myRef = mDatabase.getReference("users");
-        Query searchForUser= myRef.startAt(email).endAt(email);
+        Query searchForUser= myRef.orderByChild("email").equalTo(email);
+
         searchForUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                Log.d(TAG, (String) dataSnapshot.child("email").getValue());
-                if ( mEmailView.getText().toString().equals( dataSnapshot.child("email").getValue()) ) {
-                    Log.d(TAG, "User exists");
-                    userExists=true;
-                }
+//                HashMap map= (HashMap) dataSnapshot.getValue();
+//
+//                Log.d(TAG,"f" );
+//                if ( mEmailView.getText().toString().equals(dataSnapshot.child("email").getValue() ) ) {
+//                    Log.d(TAG, "User exists");
+//                    userExists=true;
+//                }
+                Toast.makeText(getApplicationContext(), "User already exists!",
+                        Toast.LENGTH_SHORT).show();
+                Log.d(TAG,"User exists" );
+                userExists=true;
             }
+
+
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
+
         });
+
+        searchForUser = myRef.orderByChild("username").equalTo(username);
+
     }
 
     private void writeNewUser() {

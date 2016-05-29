@@ -12,9 +12,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    private EditText mEmailView;
+    private EditText mUsernameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +43,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -41,6 +54,9 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -64,6 +80,10 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+
+
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -84,6 +104,14 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
+            mEmailView= (EditText) findViewById(R.id.emailView);
+            mUsernameView=(EditText) findViewById(R.id.usernameView);
+            FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                mUsernameView.setText("Test");
+                String email=user.getEmail();
+                mEmailView.setText(email);
+            }
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
