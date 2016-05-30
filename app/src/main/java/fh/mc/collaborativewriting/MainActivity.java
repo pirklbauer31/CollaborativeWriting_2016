@@ -1,8 +1,14 @@
 package fh.mc.collaborativewriting;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,20 +18,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    private EditText mEmailView;
-    private EditText mUsernameView;
+    private static final String TAG = "MainActivity";
+
+    private TextView mEmailView;
+    private TextView mUsernameView;
+
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
+
+    private String mUserEmail;
+    private String mUserName;
+    private FirebaseUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +55,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -43,6 +67,22 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        mAuth= FirebaseAuth.getInstance();
+
+        mAuthListener= new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user ==null) {
+                    // User is signed out
+                    Log.d( TAG, "onAuthStateChanged:signed_out");
+                    Intent i= new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(i);
+                }
+            }
+        };
+
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -103,17 +143,24 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
+            mEmailView= (TextView) findViewById(R.id.emailView);
+            mUsernameView=(TextView) findViewById(R.id.usernameView);
+            if (mUser != null ) {
+                if (mUser.getDisplayName() != null)
+                    mUsernameView.setText(mUser.getDisplayName());
+                if(mUser.getPhotoUrl() != null) {
+                    ImageView img = (ImageView) findViewById(R.id.imageView);
 
-            mEmailView= (EditText) findViewById(R.id.emailView);
-            mUsernameView=(EditText) findViewById(R.id.usernameView);
-            FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null) {
-                mUsernameView.setText("Test");
-                String email=user.getEmail();
-                mEmailView.setText(email);
+
+
+                }
+                if (mUser.getEmail() != null) {
+                    mEmailView.setText(mUser.getEmail());
+                }
             }
-        } else if (id == R.id.nav_slideshow) {
 
+        } else if (id == R.id.nav_logout) {
+            logOutUser();
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -125,5 +172,26 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+
+
+
+    }
+
+    private void logOutUser() {
+        FirebaseAuth.getInstance().signOut();
     }
 }

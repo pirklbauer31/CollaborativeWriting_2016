@@ -40,6 +40,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -300,11 +301,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void writeNewUser() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
         if (user != null) {
             // Name, email address, and profile photo Url
             String email = user.getEmail();
             String username= mUsernameView.getText().toString();
             String uid = user.getUid();
+
+            UserProfileChangeRequest setDisplayName= new UserProfileChangeRequest.Builder()
+                    .setDisplayName(username).setPhotoUri(Uri.parse("https://imgur.com/w1supRi")).build();
+
+            user.updateProfile(setDisplayName)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "User profile updated.");
+                            }
+                        }
+                    });
 
             User userObject= new User(username, email);
             DatabaseReference myRef = mDatabase.getReference("users");
