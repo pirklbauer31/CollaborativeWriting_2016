@@ -1,9 +1,11 @@
 package fh.mc.collaborativewriting;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -21,9 +23,13 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -44,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
+    private FirebaseStorage mStorage;
 
     private String mUserEmail;
     private String mUserName;
@@ -57,7 +64,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,23 +73,23 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        mAuth= FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
-        mAuthListener= new FirebaseAuth.AuthStateListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user ==null) {
+                if (user == null) {
                     // User is signed out
-                    Log.d( TAG, "onAuthStateChanged:signed_out");
-                    Intent i= new Intent(getApplicationContext(), LoginActivity.class);
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(i);
                 }
             }
         };
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-
+        mStorage= FirebaseStorage.getInstance();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -93,9 +99,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+
+
+
     }
-
-
 
 
     @Override
@@ -112,6 +121,46 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+        mEmailView = (TextView) findViewById(R.id.emailView);
+        mUsernameView = (TextView) findViewById(R.id.usernameView);
+        if (mUser != null) {
+            if (mUser.getDisplayName() != null)
+                mUsernameView.setText(mUser.getDisplayName());
+            if (mUser.getPhotoUrl() != null) {
+                // Create a storage reference from our app
+
+                StorageReference profileReference = mStorage.getReferenceFromUrl(String.valueOf(mUser.getPhotoUrl()));
+
+
+
+                final long ONE_MEGABYTE = 1024 * 1024;
+                profileReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        // Data for "testprofile.png" is returned
+                        Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        ImageView img = (ImageView) findViewById(R.id.imageView);
+                        img.setImageBitmap(bm);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                    }
+                });
+
+
+
+
+            }
+            if (mUser.getEmail() != null) {
+                mEmailView.setText(mUser.getEmail());
+            }
+        }
+
+
         return true;
     }
 
@@ -120,8 +169,6 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-
-
 
 
         int id = item.getItemId();
@@ -143,21 +190,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-            mEmailView= (TextView) findViewById(R.id.emailView);
-            mUsernameView=(TextView) findViewById(R.id.usernameView);
-            if (mUser != null ) {
-                if (mUser.getDisplayName() != null)
-                    mUsernameView.setText(mUser.getDisplayName());
-                if(mUser.getPhotoUrl() != null) {
-                    ImageView img = (ImageView) findViewById(R.id.imageView);
 
-
-
-                }
-                if (mUser.getEmail() != null) {
-                    mEmailView.setText(mUser.getEmail());
-                }
-            }
 
         } else if (id == R.id.nav_logout) {
             logOutUser();
@@ -186,7 +219,6 @@ public class MainActivity extends AppCompatActivity
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-
 
 
     }

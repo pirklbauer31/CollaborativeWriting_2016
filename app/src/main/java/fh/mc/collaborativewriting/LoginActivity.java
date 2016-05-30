@@ -310,7 +310,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String uid = user.getUid();
 
             UserProfileChangeRequest setDisplayName= new UserProfileChangeRequest.Builder()
-                    .setDisplayName(username).setPhotoUri(Uri.parse("https://imgur.com/w1supRi")).build();
+                    .setDisplayName(username).setPhotoUri(Uri.parse("gs://project-cow.appspot.com/testProfile.png")).build();
 
             user.updateProfile(setDisplayName)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
