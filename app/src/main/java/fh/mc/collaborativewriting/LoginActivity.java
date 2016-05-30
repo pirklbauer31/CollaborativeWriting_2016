@@ -84,6 +84,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private EditText mUsernameView;
+    private EditText mFirstnameView;
+    private EditText mLastnameView;
 
 
 
@@ -123,6 +125,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
         mUsernameView= (EditText) findViewById(R.id.username);
+        mLastnameView= (EditText) findViewById(R.id.lastname);
+        mFirstnameView= (EditText) findViewById(R.id.firstname);
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
 
@@ -309,6 +313,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String username= mUsernameView.getText().toString();
             String uid = user.getUid();
 
+            String firstname= mFirstnameView.getText().toString();
+            String lastname= mLastnameView.getText().toString();
+
             UserProfileChangeRequest setDisplayName= new UserProfileChangeRequest.Builder()
                     .setDisplayName(username).setPhotoUri(Uri.parse("gs://project-cow.appspot.com/testProfile.png")).build();
 
@@ -322,7 +329,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         }
                     });
 
-            User userObject= new User(username, email);
+            User userObject= new User(username, email,firstname,lastname);
             DatabaseReference myRef = mDatabase.getReference("users");
             myRef.child(uid).setValue(userObject);
         }
