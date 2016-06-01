@@ -12,4 +12,5 @@
     tools:context="fh.mc.collaborativewriting.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+
 </RelativeLayout>

@@ -25,5 +25,22 @@
 
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
-    <string name="logout" >Logout</string>
+    <string name="logout">Logout</string>
+    <string name="title_activity_create_story">CreateStoryActivity</string>
+
+    <!-- CreateStory -->
+    <string name="inputTitle">Title:</string>
+    <string name="titleHere">Title here!</string>
+    <string name="inputDescription">Description:</string>
+    <string name="descriptionHere">Description here!</string>
+    <string name="inputTags">Tags: (seperate with ;)</string>
+    <string name="tagsHere">tagx;tagy</string>
+    <string name="inputPrivacy">Privacy:</string>
+    <string name="inviteFriends">Invite Friends:</string>
+
+    <string-array name="privacySpinner">
+        <item>Private</item>
+        <item>Public</item>
+    </string-array>
+
 </resources>

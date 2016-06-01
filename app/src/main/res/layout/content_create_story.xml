@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="fh.mc.collaborativewriting.CreateStoryActivity"
+    tools:showIn="@layout/activity_create_story">
+
+
+    <GridLayout
+        android:id="@+id/choice_grid"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:padding="4dp"
+
+        android:alignmentMode="alignBounds"
+        android:columnCount="2"
+        android:rowOrderPreserved="false"
+        android:useDefaultMargins="true">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="0.6"
+            android:layout_gravity="fill_horizontal"
+            android:gravity="start|center"
+            android:text="@string/inputTitle"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="28sp" />
+
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:id="@+id/inputTitle"
+            android:layout_columnWeight="1.4"
+            android:layout_gravity="fill_horizontal"
+            android:gravity="center"
+            android:textSize="28sp"
+            android:hint="@string/titleHere" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_columnSpan="2"
+            android:gravity="start|center"
+            android:text="@string/inputDescription"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="28sp" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:id="@+id/inputDescription"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_columnSpan="2"
+            android:inputType="textMultiLine"
+            android:gravity="center"
+            android:textSize="28sp"
+            android:hint="@string/descriptionHere" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_columnSpan="2"
+            android:gravity="start|center"
+            android:text="@string/inputTags"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="28sp" />
+
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:id="@+id/inputTags"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_columnSpan="2"
+            android:inputType="textMultiLine"
+            android:gravity="center"
+            android:textSize="28sp"
+            android:hint="@string/tagsHere" />
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="0.6"
+            android:layout_gravity="fill_horizontal"
+            android:gravity="start|center"
+            android:text="@string/inputPrivacy"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="28sp" />
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:id="@+id/inputPrivacy"
+            android:layout_columnWeight="1.4"
+            android:layout_gravity="fill_horizontal"
+            android:gravity="end|center"
+            android:textSize="28sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_columnSpan="2"
+            android:gravity="start|center"
+            android:text="@string/inviteFriends"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textSize="28sp" />
+
+        <ListView
+            android:layout_width="0dp"
+            android:layout_height="130dp"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_columnSpan="2"
+            android:gravity="center"
+            android:id="@+id/selectFriends" />
+
+
+
+
+
+
+
+
+
+    </GridLayout>
+</RelativeLayout>
