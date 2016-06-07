@@ -4,13 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
-import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -18,26 +15,18 @@ import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -48,12 +37,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
@@ -128,16 +112,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLastnameView= (EditText) findViewById(R.id.lastname);
         mFirstnameView= (EditText) findViewById(R.id.firstname);
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = (Button) findViewById(R.id.email_register_button);
 
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                createUserwithEmail();
+                createUserWithEmail();
             }
         });
 
-        Button firebase_test_button = (Button) findViewById(R.id.firebase_test_button);
+        Button mEmailSearchButton = (Button) findViewById(R.id.email_search_button);
+
+        mEmailSearchButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchUserEmail();
+            }
+        });
+
+        Button firebase_test_button = (Button) findViewById(R.id.email_signin_button);
         firebase_test_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,6 +141,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
     }
 
+    private void searchUserEmail() {
+        final String email=mEmailView.getText().toString();
+        final String username= mUsernameView.getText().toString();
+        DatabaseReference dataRef = mDatabase.getReference();
+        Query searchUser= dataRef.child("users").orderByChild("email").equalTo(email);
+        searchUser.addListenerForSingleValueEvent(
+                new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+//                if (user.email == email)
+//                    Toast.makeText(LoginActivity.this, "E-Mail exists",
+//                            Toast.LENGTH_SHORT).show();
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
 
 
     private boolean validateEmailPassword () {
@@ -226,7 +244,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
-    private void createUserwithEmail() {
+    private void createUserWithEmail() {
 
         final String email= mEmailView.getText().toString();
         String password= mPasswordView.getText().toString();
@@ -237,9 +255,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return;
         }
 
-
         checkIfUserExists();
-
 
         if (userExists == false) {
             mAuth.createUserWithEmailAndPassword(email, password)
@@ -275,17 +291,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         searchForUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                HashMap map= (HashMap) dataSnapshot.getValue();
-//
-//                Log.d(TAG,"f" );
-//                if ( mEmailView.getText().toString().equals(dataSnapshot.child("email").getValue() ) ) {
-//                    Log.d(TAG, "User exists");
-//                    userExists=true;
-//                }
-                Toast.makeText(getApplicationContext(), "User already exists!",
-                        Toast.LENGTH_SHORT).show();
-                Log.d(TAG,"User exists" );
-                userExists=true;
+                HashMap map= (HashMap) dataSnapshot.getValue();
+
+                Log.d(TAG,"f" );
+                if ( mEmailView.getText().toString().equals(dataSnapshot.child("email").getValue() ) ) {
+                    Log.d(TAG, "User exists");
+                    userExists=true;
+                    Toast.makeText(getApplicationContext(), "User already exists!",
+                            Toast.LENGTH_SHORT).show();
+                }
+
             }
 
 
@@ -350,9 +365,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
 
     /**

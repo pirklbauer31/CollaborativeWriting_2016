@@ -27,7 +27,7 @@
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_columnWeight="0.6"
             android:layout_gravity="fill_horizontal"
             android:gravity="start|center"
@@ -38,91 +38,90 @@
 
         <EditText
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:id="@+id/inputTitle"
             android:layout_columnWeight="1.4"
             android:layout_gravity="fill_horizontal"
             android:gravity="center"
-            android:textSize="28sp"
             android:hint="@string/titleHere" />
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_gravity="fill_horizontal"
             android:layout_columnSpan="2"
             android:gravity="start|center"
             android:text="@string/inputDescription"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="28sp" />
+             />
 
         <EditText
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:id="@+id/inputDescription"
             android:layout_columnWeight="1"
             android:layout_gravity="fill_horizontal"
             android:layout_columnSpan="2"
             android:inputType="textMultiLine"
             android:gravity="center"
-            android:textSize="28sp"
+
             android:hint="@string/descriptionHere" />
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_gravity="fill_horizontal"
             android:layout_columnSpan="2"
             android:gravity="start|center"
             android:text="@string/inputTags"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="28sp" />
+             />
 
 
         <EditText
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:id="@+id/inputTags"
             android:layout_columnWeight="1"
             android:layout_gravity="fill_horizontal"
             android:layout_columnSpan="2"
             android:inputType="textMultiLine"
             android:gravity="center"
-            android:textSize="28sp"
+
             android:hint="@string/tagsHere" />
 
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_columnWeight="0.6"
             android:layout_gravity="fill_horizontal"
             android:gravity="start|center"
             android:text="@string/inputPrivacy"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="28sp" />
+             />
 
         <Spinner
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:id="@+id/inputPrivacy"
             android:layout_columnWeight="1.4"
             android:layout_gravity="fill_horizontal"
             android:gravity="end|center"
-            android:textSize="28sp" />
+             />
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_columnWeight="1"
             android:layout_gravity="fill_horizontal"
             android:layout_columnSpan="2"
             android:gravity="start|center"
             android:text="@string/inviteFriends"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="28sp" />
+            />
 
         <ListView
             android:layout_width="0dp"
