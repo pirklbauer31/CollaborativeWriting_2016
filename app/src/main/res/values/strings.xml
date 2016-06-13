@@ -35,7 +35,7 @@
     <string name="titleHere">Title here!</string>
     <string name="inputDescription">Description:</string>
     <string name="descriptionHere">Description here!</string>
-    <string name="inputTags">Tags: (seperate with ;)</string>
+    <string name="inputTags">Tags: (separate with ;)</string>
     <string name="tagsHere">tagx;tagy</string>
     <string name="inputPrivacy">Privacy:</string>
     <string name="inviteFriends">Invite Friends:</string>
@@ -44,5 +44,9 @@
         <item>Private</item>
         <item>Public</item>
     </string-array>
+
+
+    <!-- Facebook -->
+    <string name="facebook_app_id">793733447392876</string>
 
 </resources>

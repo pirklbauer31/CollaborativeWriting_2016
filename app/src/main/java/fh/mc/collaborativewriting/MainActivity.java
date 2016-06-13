@@ -4,22 +4,23 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,14 +32,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import fh.mc.collaborativewriting.fragments.MyStoriesFragment;
+import fh.mc.collaborativewriting.fragments.RecentStoryFragment;
+import fh.mc.collaborativewriting.fragments.StarredStoriesFragment;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
@@ -51,6 +49,10 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private FirebaseStorage mStorage;
+
+
+    private FragmentPagerAdapter mPagerAdapter;
+    private ViewPager mViewPager;
 
     private String mUserEmail;
     private String mUserName;
@@ -101,7 +103,41 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            private final Fragment[] mFragments = new Fragment[]{
+                    new MyStoriesFragment(),
+                    new RecentStoryFragment(),
+                    new StarredStoriesFragment()
+            };
 
+            private final String[] mFragmentNames = new String[]{
+                    "My Stories",
+                    "Recent Stories",
+                    "Starred Stories"
+            };
+
+
+            @Override
+            public Fragment getItem(int position) {
+                return mFragments[position];
+            }
+
+            @Override
+            public int getCount() {
+                return mFragments.length;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mFragmentNames[position];
+            }
+        };
+
+        //Set up ViewPager
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mPagerAdapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
 
 
     }

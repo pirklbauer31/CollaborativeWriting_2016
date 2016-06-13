@@ -18,7 +18,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:padding="4dp"
+
 
         android:alignmentMode="alignBounds"
         android:columnCount="2"
@@ -32,7 +32,7 @@
             android:layout_gravity="fill_horizontal"
             android:gravity="start|center"
             android:text="@string/inputTitle"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textSize="28sp" />
 
 
@@ -53,7 +53,7 @@
             android:layout_columnSpan="2"
             android:gravity="start|center"
             android:text="@string/inputDescription"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
              />
 
         <EditText
@@ -76,7 +76,7 @@
             android:layout_columnSpan="2"
             android:gravity="start|center"
             android:text="@string/inputTags"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
              />
 
 
@@ -100,7 +100,7 @@
             android:layout_gravity="fill_horizontal"
             android:gravity="start|center"
             android:text="@string/inputPrivacy"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
              />
 
         <Spinner
@@ -120,7 +120,7 @@
             android:layout_columnSpan="2"
             android:gravity="start|center"
             android:text="@string/inviteFriends"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
             />
 
         <ListView
@@ -133,12 +133,18 @@
             android:id="@+id/selectFriends" />
 
 
-
-
-
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Story"
+            android:id="@+id/inputCreate"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
 
 
     </GridLayout>
+
+
 </RelativeLayout>

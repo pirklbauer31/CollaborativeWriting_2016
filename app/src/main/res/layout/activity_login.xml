@@ -131,6 +131,19 @@
                 android:text="Search"
                 android:id="@+id/email_search_button"
                 android:layout_gravity="center_horizontal" />
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/fb_login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5pt"
+                android:paddingTop="15dp"
+                android:textSize="@dimen/com_facebook_share_button_text_size"
+                android:paddingBottom="15dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp" />
+
+
         </LinearLayout>
     </ScrollView>
 
