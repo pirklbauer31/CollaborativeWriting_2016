@@ -15,6 +15,7 @@ import java.util.Map;
 @IgnoreExtraProperties
 public class Story {
 
+    //TODO: include other important properties (tags, moderators, etc..)
     public String uid;
     public String author;
     public String title;

@@ -20,8 +20,8 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 
+import fh.mc.collaborativewriting.DetailActivity;
 import fh.mc.collaborativewriting.R;
-import fh.mc.collaborativewriting.StoryDetailActivity;
 import fh.mc.collaborativewriting.models.Story;
 import fh.mc.collaborativewriting.viewholder.StoryViewHolder;
 
@@ -76,8 +76,8 @@ public abstract class StoryListFragment extends Fragment {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent i = new Intent(getActivity(), StoryDetailActivity.class);
-                        i.putExtra(StoryDetailActivity.EXTRA_STORY_KEY, storyKey);
+                        Intent i = new Intent(getActivity(), DetailActivity.class);
+                        i.putExtra(DetailActivity.EXTRA_STORY_KEY, storyKey);
                         startActivity(i);
                     }
                 });

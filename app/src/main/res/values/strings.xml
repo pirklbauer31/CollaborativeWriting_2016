@@ -48,5 +48,7 @@
 
     <!-- Facebook -->
     <string name="facebook_app_id">793733447392876</string>
+    <string name="contribute_to_this_story">Contribute to this story!</string>
+    <string name="title_activity_story_detail">StoryDetailActivity</string>
 
 </resources>

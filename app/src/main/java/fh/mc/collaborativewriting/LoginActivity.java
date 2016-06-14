@@ -106,6 +106,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
+                    showProgress(false);
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     Intent i= new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(i);
@@ -322,6 +323,8 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         DatabaseReference myRef = mDatabase.getReference("users");
         Query searchForUser= myRef.orderByChild("email").equalTo(email);
 
+        showProgress(true);
+
         searchForUser.addListenerForSingleValueEvent(new ValueEventListener () {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -329,6 +332,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                     Toast.makeText(getApplicationContext(), "User already exists!",
                             Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "User exists");
+                    showProgress(false);
                 } else {
                     createUserwithEmail();
                 }
@@ -404,6 +408,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     /**
      * Shows the progress UI and hides the login form.
      */
+    //TODO: nd so schirche Animation finden, wenn möglich
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow

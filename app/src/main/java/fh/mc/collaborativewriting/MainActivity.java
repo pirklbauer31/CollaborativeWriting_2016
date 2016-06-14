@@ -102,7 +102,7 @@ public class MainActivity extends BaseActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        //TODO: add additional Fragments?
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[]{
                     new MyStoriesFragment(),
@@ -112,8 +112,8 @@ public class MainActivity extends BaseActivity
 
             private final String[] mFragmentNames = new String[]{
                     "My Stories",
-                    "Recent Stories",
-                    "Starred Stories"
+                    "New Stories",
+                    "Top Stories"
             };
 
 
