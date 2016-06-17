@@ -46,6 +46,7 @@ import com.google.firebase.database.ValueEventListener;
 import fh.mc.collaborativewriting.models.User;
 
 import static fh.mc.collaborativewriting.R.string.error_registration_failed;
+import static fh.mc.collaborativewriting.R.string.google_api_key;
 
 /**
  * A login screen that offers login via email/password.
@@ -96,6 +97,8 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
         setContentView(R.layout.activity_login);
 
+        Intent i = getIntent();
+        String regOrLog=i.getStringExtra("LoginChooser");
 
         mAuth= FirebaseAuth.getInstance();
         mDatabase= FirebaseDatabase.getInstance();
@@ -126,6 +129,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         mFirstnameView= (EditText) findViewById(R.id.firstname);
 
         Button mEmailRegisterButton = (Button) findViewById(R.id.email_register_button);
+        Button mEmailSearchButton = (Button) findViewById(R.id.email_search_button);
 
         mEmailRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -134,7 +138,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             }
         });
 
-        Button mEmailSearchButton = (Button) findViewById(R.id.email_search_button);
+
 
         mEmailSearchButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -165,18 +169,25 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
-
             @Override
             public void onCancel() {
                 Log.d(TAG, "facebook:onCancel:");
             }
-
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError:", error);
             }
         });
         */
+        if(regOrLog.contentEquals("Login")){
+            mEmailRegisterButton.setVisibility(View.GONE);
+            mEmailSearchButton.setVisibility(View.GONE);
+            mLastnameView.setVisibility(View.GONE);
+            mFirstnameView.setVisibility(View.GONE);
+        }else{
+            mEmailSignInButton.setVisibility(View.GONE);
+        }
+
 
     }
 
@@ -298,24 +309,24 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         }
 
 
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-                            // If sign in fails, display a message to the user. If sign in succeeds
-                            // the auth state listener will be notified and logic to handle the
-                            // signed in user can be handled in the listener.
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(getApplicationContext(), error_registration_failed,
-                                        Toast.LENGTH_SHORT).show();
-                            } else {
-                                writeNewUser();
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), error_registration_failed,
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            writeNewUser();
 
-                            }
                         }
-                    });
+                    }
+                });
 
     }
 
@@ -402,12 +413,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-
-
-
-
-
-
     /**
      * Shows the progress UI and hides the login form.
      */
@@ -518,4 +523,3 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         }
     }
 }
-
