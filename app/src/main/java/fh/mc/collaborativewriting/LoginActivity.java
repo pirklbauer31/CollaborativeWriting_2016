@@ -393,7 +393,8 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                         }
                     });
 
-            User userObject= new User(username, email,firstname,lastname);
+            User userObject= new User(username, email,firstname,lastname
+                    , "gs://project-cow.appspot.com/testProfile.png");
             DatabaseReference myRef = mDatabase.getReference("users");
             myRef.child(uid).setValue(userObject);
         }

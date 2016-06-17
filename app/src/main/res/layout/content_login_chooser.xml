@@ -9,7 +9,7 @@
         android:layout_height="fill_parent"
         android:id="@+id/CowBackground"
         android:scaleType="fitXY"
-        android:src="@drawable/cow_background"
+        android:src="@drawable/login_background"
         android:layout_alignWithParentIfMissing="false"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -25,18 +25,23 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="#2affffff"
+        android:textColor="#ffffff" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Register"
         android:id="@+id/register"
+        android:layout_marginTop="20dp"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textColor="#ffffff"
+        android:background="#2affffff" />
 
 
 

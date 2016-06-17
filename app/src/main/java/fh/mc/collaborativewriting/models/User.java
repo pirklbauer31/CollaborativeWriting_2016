@@ -12,13 +12,15 @@ public class User {
     public String email;
     public String firstname;
     public String lastname;
+    public String profilePic;
 
 
-    public User(String username, String email,String firstname, String lastname) {
+    public User(String username, String email,String firstname, String lastname, String profilePic) {
         this.username = username;
         this.email= email;
         this.firstname=firstname;
         this.lastname=lastname;
+        this.profilePic=profilePic;
     }
 
 
@@ -28,7 +30,7 @@ public class User {
     }
 
     public User(String username, String email) {
-        this(username, email, "", "");
+        this(username, email, "", "", "gs://project-cow.appspot.com/testProfile.png");
     }
 
 
