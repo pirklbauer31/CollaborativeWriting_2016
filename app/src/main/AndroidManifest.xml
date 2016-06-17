@@ -20,15 +20,16 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-            <action android:name="OPEN_ACTIVITY_1" />
-            <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="OPEN_ACTIVITY_1" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
@@ -53,8 +54,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="fh.mc.collaborativewriting.MainActivity" />
         </activity>
+        <activity
+            android:name=".LoginChooserActivity"
+            android:label="@string/title_activity_login_chooser"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
