@@ -51,6 +51,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail);
+
 
         // Get post key from intent
         mStoryKey = getIntent().getStringExtra(EXTRA_STORY_KEY);
@@ -60,9 +62,9 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
         // Initialize Database
         mStoryReference = FirebaseDatabase.getInstance().getReference()
-                .child("posts").child(mStoryKey);
+                .child("stories").child(mStoryKey);
         mContributionReference = FirebaseDatabase.getInstance().getReference()
-                .child("post-comments").child(mStoryKey);
+                .child("stories-comments").child(mStoryKey);
 
         //Init View
         mAuthorView = (TextView) findViewById(R.id.story_author);

@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".DetailActivity">
+    tools:context="fh.mc.collaborativewriting.DetailActivity">
 
     <include
         android:id="@+id/story_author_layout"
@@ -58,13 +58,27 @@
         android:layout_marginTop="10dp" />
 
 
-    <!--TODO: Zu blöd, dass i de zwa umdrah-->
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/post_text_layout"
+        android:layout_above="@+id/story_contribution_form"
+        android:id="@+id/detail_story_contributions"
+        >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_contribution" />
+    </ScrollView>
     <LinearLayout
         android:id="@+id/story_contribution_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/post_text_layout"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="20dp"
         android:weightSum="1.0">
 
@@ -86,12 +100,5 @@
             android:text="Post" />
 
     </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_comments"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/story_contribution_form"
-        tools:listitem="@layout/item_contribution" />
 
 </RelativeLayout>

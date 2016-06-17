@@ -132,6 +132,8 @@
                 android:id="@+id/email_search_button"
                 android:layout_gravity="center_horizontal" />
 
+
+            <!--TODO: bringt die App derzeit zum Crashen, deswegen derweil entfernt....
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/fb_login_button"
                 android:layout_width="match_parent"
@@ -142,6 +144,8 @@
                 android:paddingBottom="15dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginLeft="30dp" />
+
+               -->
 
 
         </LinearLayout>

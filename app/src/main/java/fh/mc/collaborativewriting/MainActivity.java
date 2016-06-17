@@ -42,6 +42,7 @@ public class MainActivity extends BaseActivity
 
     private static final String TAG = "MainActivity";
 
+
     private TextView mEmailView;
     private TextView mUsernameView;
 

@@ -29,7 +29,7 @@
     <string name="action_search">Search</string>
     <string name="logout">Logout</string>
     <string name="title_activity_create_story">CreateStoryActivity</string>
-
+    <string name="title_activity_details_story">StoryDetailActivity</string>
     <!-- CreateStory -->
     <string name="inputTitle">Title:</string>
     <string name="titleHere">Title here!</string>
