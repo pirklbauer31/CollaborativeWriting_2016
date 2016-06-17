@@ -1,3 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="#000000" >
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:id="@+id/CowBackground"
+        android:scaleType="fitXY"
+        android:src="@drawable/cow_background"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:adjustViewBounds="true"
+        />
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,6 +27,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:foregroundTint="@color/common_google_signin_btn_text_light_default"
     tools:context="fh.mc.collaborativewriting.LoginActivity">
 
     <!-- Login progress -->
@@ -21,8 +41,9 @@
 
     <ScrollView
         android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layoutMode="clipBounds">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -41,7 +62,8 @@
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="@color/common_google_signin_btn_text_light_default"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -56,7 +78,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:maxLines="1"
-                    android:singleLine="true"/>
+                    android:singleLine="true"
+                    android:textColorHint="@color/common_google_signin_btn_text_light"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -133,6 +156,7 @@
                 android:layout_gravity="center_horizontal" />
 
 
+
             <!--TODO: bringt die App derzeit zum Crashen, deswegen derweil entfernt....
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/fb_login_button"
@@ -152,3 +176,4 @@
     </ScrollView>
 
 </LinearLayout>
+</RelativeLayout>
