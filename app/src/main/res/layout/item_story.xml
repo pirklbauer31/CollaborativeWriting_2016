@@ -5,6 +5,12 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp">
 
+    <ImageView
+        android:src="@drawable/subtle_grunge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

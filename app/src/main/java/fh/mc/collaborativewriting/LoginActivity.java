@@ -92,7 +92,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        //FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_login);
 
@@ -153,6 +153,8 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
+
+        /*
         //Facebook Login
         mCallBackManager = CallbackManager.Factory.create();
         final LoginButton loginButton = (LoginButton) findViewById(R.id.fb_login_button);
@@ -174,6 +176,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 Log.d(TAG, "facebook:onError:", error);
             }
         });
+        */
 
     }
 
