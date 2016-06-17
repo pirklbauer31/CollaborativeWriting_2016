@@ -3,18 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    >
 
+    <!--
     <ImageView
-        android:src="@drawable/subtle_grunge"
+        android:src="@drawable/diagonal_striped_brick"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"/>
 
+        android:scaleType="matrix"/>
+    -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:background="@drawable/repeat">
 
         <include
             android:id="@+id/story_author_layout"
