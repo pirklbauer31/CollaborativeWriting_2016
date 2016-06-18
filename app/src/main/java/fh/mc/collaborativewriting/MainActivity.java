@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity
                 if (user == null) {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
-                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);
                     startActivity(i);
                 }
             }
