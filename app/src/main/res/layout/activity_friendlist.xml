@@ -9,4 +9,49 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="fh.mc.collaborativewriting.FriendlistActivity">
 
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerHorizontal="true"
+
+        android:columnCount="2"
+        android:rowOrderPreserved="false"
+        android:useDefaultMargins="true">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="0.6"
+            android:layout_gravity="fill_horizontal"
+            android:gravity="start|center"
+            android:text="@string/inputFriendAdd"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/inputAddFriend"
+            android:layout_columnWeight="1.4"
+            android:layout_gravity="fill_horizontal"
+            android:gravity="center"
+            android:hint="@string/friendAddHere" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Send Friend Request"
+            android:id="@+id/inputCreate"
+            android:layout_columnSpan="2"
+            style="?android:attr/borderlessButtonStyle"
+            />
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_columnSpan="2"
+            android:id="@+id/listContentFriendlist" />
+
+    </GridLayout>
 </RelativeLayout>

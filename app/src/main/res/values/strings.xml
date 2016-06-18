@@ -48,11 +48,14 @@
 
     <!-- Friendlist -->
     <string name="title_activity_friendlist">Friendlist</string>
+    <string name="inputFriendAdd">Add Friend:</string>
+    <string name="friendAddHere">username here!</string>
 
     <!-- Facebook -->
     <string name="facebook_app_id">793733447392876</string>
     <string name="contribute_to_this_story">Contribute to this story!</string>
     <string name="title_activity_story_detail">StoryDetailActivity</string>
     <string name="title_activity_login_chooser">LoginChooser</string>
+
 
 </resources>
