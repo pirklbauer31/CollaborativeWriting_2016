@@ -28,7 +28,8 @@
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
     <string name="logout">Logout</string>
-    <string name="title_activity_create_story">CreateStoryActivity</string>
+    <string name="friends">Friends</string>
+    <string name="title_activity_create_story">Create Story</string>
     <string name="title_activity_details_story">StoryDetailActivity</string>
     <!-- CreateStory -->
     <string name="inputTitle">Title:</string>
@@ -45,6 +46,8 @@
         <item>Public</item>
     </string-array>
 
+    <!-- Friendlist -->
+    <string name="title_activity_friendlist">Friendlist</string>
 
     <!-- Facebook -->
     <string name="facebook_app_id">793733447392876</string>
