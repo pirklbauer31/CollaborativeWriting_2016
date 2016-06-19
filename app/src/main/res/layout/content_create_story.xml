@@ -32,8 +32,7 @@
             android:layout_gravity="fill_horizontal"
             android:gravity="start|center"
             android:text="@string/inputTitle"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textSize="28sp" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 
         <EditText

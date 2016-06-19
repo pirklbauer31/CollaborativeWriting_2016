@@ -229,8 +229,9 @@ public class MainActivity extends BaseActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
+        } else if (id == R.id.nav_friends) {
+            Intent i= new Intent(getApplicationContext(), FriendlistActivity.class);
+            startActivity(i);
 
         } else if (id == R.id.nav_logout) {
             logOutUser();
