@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Send Friend Request"
-            android:id="@+id/inputCreate"
+            android:id="@+id/cmdSendFriendRequest"
             android:layout_columnSpan="2"
             style="?android:attr/borderlessButtonStyle"
             />

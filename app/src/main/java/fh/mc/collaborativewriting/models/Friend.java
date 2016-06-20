@@ -21,4 +21,11 @@ public class Friend {
         this.profilePic = profilePic;
         this.acceptedFriend = acceptedFriend;
     }
+
+    public Friend(String username, boolean acceptedFriend, String userId)
+    {
+        this.userId = userId;
+        this.username = username;
+        this.acceptedFriend = acceptedFriend;
+    }
 }
