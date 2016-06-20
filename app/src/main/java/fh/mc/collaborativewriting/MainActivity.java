@@ -30,17 +30,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -48,6 +54,7 @@ import java.io.InputStream;
 import fh.mc.collaborativewriting.fragments.MyStoriesFragment;
 import fh.mc.collaborativewriting.fragments.RecentStoryFragment;
 import fh.mc.collaborativewriting.fragments.StarredStoriesFragment;
+import fh.mc.collaborativewriting.models.User;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -63,6 +70,8 @@ public class MainActivity extends BaseActivity
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private FirebaseStorage mStorage;
+    private StorageReference mStorageRef;
+    private Uri mDownloadUrl = null;
 
 
     private FragmentPagerAdapter mPagerAdapter;
@@ -117,6 +126,7 @@ public class MainActivity extends BaseActivity
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         mStorage = FirebaseStorage.getInstance();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -198,7 +208,7 @@ public class MainActivity extends BaseActivity
                 // Create a storage reference from our app
 
                 StorageReference profileReference = mStorage.getReferenceFromUrl(String.valueOf(mUser.getPhotoUrl()));
-
+                //StorageReference profileReference = mStorage.getReferenceFromUrl(String.valueOf(mUser.getPhotoUrl()));
                 context = getApplicationContext();
                 final long ONE_MEGABYTE = 1024 * 1024;
 
@@ -241,6 +251,7 @@ public class MainActivity extends BaseActivity
                                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                                 photoPickerIntent.setType("image/*");
                                 startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+
 
                             }
                         });
@@ -401,7 +412,11 @@ public class MainActivity extends BaseActivity
                     try {
                         imageStream = getContentResolver().openInputStream(selectedImage);
                         yourSelectedImage = decodeUri(selectedImage);
+                        uploadFromUri(selectedImage);
+                        updateProfilePic(selectedImage);
                         img.setImageBitmap(yourSelectedImage);
+
+
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -409,7 +424,25 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    private void updateProfilePic(Uri selectedImage){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setPhotoUri(Uri.parse("gs://project-cow.appspot.com/"+selectedImage.getLastPathSegment()))
+                .build();
+        Log.d(TAG, "Kevin Pirklbauer Test 123");
+        Log.d(TAG, selectedImage.getLastPathSegment());
+
+        user.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User profile updated.");
+                        }
+                    }
+                });
+    }
     private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException {
 
         // Decode image size
@@ -439,4 +472,52 @@ public class MainActivity extends BaseActivity
         return BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o2);
 
     }
+    // [START upload_from_uri]
+    private void uploadFromUri(Uri fileUri) {
+        Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
+
+        // [START get_child_ref]
+        // Get a reference to store file at photos/<FILENAME>.jpg
+        final StorageReference photoRef = mStorageRef.child(fileUri.getLastPathSegment());
+        // [END get_child_ref]
+
+        // Upload file to Firebase Storage
+        // [START_EXCLUDE]
+        //showProgressDialog();
+        // [END_EXCLUDE]
+        Log.d(TAG, "uploadFromUri:dst:" + photoRef.getPath());
+        photoRef.putFile(fileUri)
+                .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Upload succeeded
+                        Log.d(TAG, "uploadFromUri:onSuccess");
+
+                        // Get the public download URL
+                        mDownloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
+
+                        // [START_EXCLUDE]
+                        //hideProgressDialog();
+                        //updateUI(mAuth.getCurrentUser());
+                        // [END_EXCLUDE]
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Upload failed
+                        Log.w(TAG, "uploadFromUri:onFailure", exception);
+
+                        mDownloadUrl = null;
+
+                        // [START_EXCLUDE]
+                        //hideProgressDialog();
+                        Toast.makeText(MainActivity.this, "Error: upload failed",
+                                Toast.LENGTH_SHORT).show();
+                        //updateUI(mAuth.getCurrentUser());
+                        // [END_EXCLUDE]
+                    }
+                });
+    }
+// [END upload_from_uri]
 }
