@@ -16,6 +16,7 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import fh.mc.collaborativewriting.R;
 
@@ -23,6 +24,8 @@ public class LoginChooserActivity extends AppCompatActivity {
 
 
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
 
     private static final String TAG = "LoginChooserActivity";
     @Override
@@ -33,9 +36,10 @@ public class LoginChooserActivity extends AppCompatActivity {
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-
+        mAuth= FirebaseAuth.getInstance();
+        mDatabase= FirebaseDatabase.getInstance();
         //Firebase Loged on
-        /*mAuthListener= new FirebaseAuth.AuthStateListener() {
+        mAuthListener= new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -49,7 +53,7 @@ public class LoginChooserActivity extends AppCompatActivity {
                     Log.d( TAG, "onAuthStateChanged:signed_out");
                 }
             }
-        };*/
+        };
 
         Button login = (Button) findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener(){
@@ -70,6 +74,19 @@ public class LoginChooserActivity extends AppCompatActivity {
             startActivity(i);
             }
         });
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 
 

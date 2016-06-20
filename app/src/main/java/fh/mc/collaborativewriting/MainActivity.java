@@ -1,17 +1,24 @@
 package fh.mc.collaborativewriting;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +31,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +42,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 import fh.mc.collaborativewriting.fragments.MyStoriesFragment;
 import fh.mc.collaborativewriting.fragments.RecentStoryFragment;
 import fh.mc.collaborativewriting.fragments.StarredStoriesFragment;
@@ -39,7 +52,7 @@ import fh.mc.collaborativewriting.fragments.StarredStoriesFragment;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
+    private static final int SELECT_PHOTO = 100;
     private static final String TAG = "MainActivity";
 
 
@@ -59,6 +72,17 @@ public class MainActivity extends BaseActivity
     private String mUserName;
     private FirebaseUser mUser;
 
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 7;
+    private static Context context;
+    private ImageView img;
+
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +95,7 @@ public class MainActivity extends BaseActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i= new Intent(getApplicationContext(), CreateStoryActivity.class);
+                Intent i = new Intent(getApplicationContext(), CreateStoryActivity.class);
                 startActivity(i);
             }
         });
@@ -92,7 +116,7 @@ public class MainActivity extends BaseActivity
         };
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-        mStorage= FirebaseStorage.getInstance();
+        mStorage = FirebaseStorage.getInstance();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -141,6 +165,9 @@ public class MainActivity extends BaseActivity
         tabLayout.setupWithViewPager(mViewPager);
 
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -172,17 +199,52 @@ public class MainActivity extends BaseActivity
 
                 StorageReference profileReference = mStorage.getReferenceFromUrl(String.valueOf(mUser.getPhotoUrl()));
 
-
-
+                context = getApplicationContext();
                 final long ONE_MEGABYTE = 1024 * 1024;
+
                 profileReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                     @Override
                     public void onSuccess(byte[] bytes) {
+                        // Here, thisActivity is the current activity
+
                         // Data for "testprofile.png" is returned
                         Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        ImageView img = (ImageView) findViewById(R.id.imageView);
+                        img = (ImageView) findViewById(R.id.profilePic);
                         img.setImageBitmap(bm);
+                        img.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                                        != PackageManager.PERMISSION_GRANTED) {
+
+                                    // Should we show an explanation?
+                                    if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                                        // Show an expanation to the user *asynchronously* -- don't block
+                                        // this thread waiting for the user's response! After the user
+                                        // sees the explanation, try again to request the permission.
+
+                                    } else {
+
+                                        // No explanation needed, we can request the permission.
+
+                                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+                                        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                                        //app-defined int constant. The callback method gets the
+                                        //result of the request.
+                                    }
+                                }
+                                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                                photoPickerIntent.setType("image/*");
+                                startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+
+                            }
+                        });
+                        ;
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -190,8 +252,6 @@ public class MainActivity extends BaseActivity
                         // Handle any errors
                     }
                 });
-
-
 
 
             }
@@ -203,6 +263,32 @@ public class MainActivity extends BaseActivity
 
         return true;
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        //switch (requestCode) {
+            //case android.Manifest.permission.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_MEDIA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                    photoPickerIntent.setType("image/*");
+                    startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            //}
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -251,20 +337,106 @@ public class MainActivity extends BaseActivity
     @Override
     public void onStop() {
         super.onStop();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://fh.mc.collaborativewriting/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.disconnect();
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
         mAuth.addAuthStateListener(mAuthListener);
 
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://fh.mc.collaborativewriting/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
     }
 
     private void logOutUser() {
         FirebaseAuth.getInstance().signOut();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+        switch (requestCode) {
+            case SELECT_PHOTO:
+                if (resultCode == RESULT_OK) {
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    grantUriPermission(this.toString(), selectedImage, 0);
+                    InputStream imageStream = null;
+                    Bitmap yourSelectedImage;
+                    try {
+                        imageStream = getContentResolver().openInputStream(selectedImage);
+                        yourSelectedImage = decodeUri(selectedImage);
+                        img.setImageBitmap(yourSelectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+        }
+    }
+
+
+    private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException {
+
+        // Decode image size
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o);
+
+        // The new size we want to scale to
+        final int REQUIRED_SIZE = 140;
+
+        // Find the correct scale value. It should be the power of 2.
+        int width_tmp = o.outWidth, height_tmp = o.outHeight;
+        int scale = 1;
+        while (true) {
+            if (width_tmp / 2 < REQUIRED_SIZE
+                    || height_tmp / 2 < REQUIRED_SIZE) {
+                break;
+            }
+            width_tmp /= 2;
+            height_tmp /= 2;
+            scale *= 2;
+        }
+
+        // Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+        return BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o2);
+
     }
 }
