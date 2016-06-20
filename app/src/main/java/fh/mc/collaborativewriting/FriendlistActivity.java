@@ -72,7 +72,7 @@ public class FriendlistActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                            //Add new friend
-                            writeNewFriend(userId, friendname);
+                            getFriendId(userId, friendname);
                         }
 
                         // Finish this Activity, back to the stream
@@ -87,8 +87,9 @@ public class FriendlistActivity extends AppCompatActivity {
                 });
     }
 
-    public void writeNewFriend(final String userId, String friendUsername)
+    public void writeNewFriend(final String userId, String friendId)
     {
+        /*
         Query friendRef = mDataBase.child("users").orderByChild("username").equalTo(friendUsername);
         friendRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -135,25 +136,33 @@ public class FriendlistActivity extends AppCompatActivity {
             }
         });
 
-
+        */
+        mDataBase.child("users").child(userId).child("friends").child(friendId).setValue(true);
+        mDataBase.child("users").child(friendId).child("friends").child(userId).setValue(false);
 
         //Toast.makeText(FriendlistActivity.this, friendId, Toast.LENGTH_LONG).show();
     }
 
-    public boolean friendExists (String userId, final String friendId)
+    public void friendExists (final String userId, final String friendId, final String friendUsername)
     {
-        final boolean[] friendFound = new boolean[1];
-        Query friendExists = mDataBase.child("users").child(userId).child("friends").orderByChild(friendId);
+       // Query friendExists = mDataBase.child("users").child(userId).child("friends").orderByChild(friendId);
+        Query friendExists = mDataBase.child("users").child(userId).child("friends").child(friendId);
         friendExists.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot friendSnapshot : dataSnapshot.getChildren()) {
-                    if (friendSnapshot.getKey().equals(friendId))
-                        friendFound[0] = true;
+
+                   // if (dataSnapshot.getKey().equals(friendId))
+                    if(dataSnapshot.exists())
+                        Toast.makeText(FriendlistActivity.this,"Friend " + friendUsername + " already exists!", Toast.LENGTH_LONG).show();
                     else
-                        friendFound[0] = false;
+                    {
+                        //user is not yet added as friend, call writeNewFriend
+                        Toast.makeText(FriendlistActivity.this, "Friend " + friendUsername + " does not exist yet, will be added!", Toast.LENGTH_LONG).show();
+                        writeNewFriend(userId, friendId);
+                    }
+
                     //System.out.println("Friendexistskey:" + friendSnapshot.getKey());
-                }
+
 
             }
 
@@ -162,7 +171,44 @@ public class FriendlistActivity extends AppCompatActivity {
 
             }
         });
-        return friendFound[0];
+    }
+
+    public void getFriendId (final String userId, final String friendUsername)
+    {
+        Query friendRef = mDataBase.child("users").orderByChild("username").equalTo(friendUsername);
+        friendRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User friendUser = dataSnapshot.getValue(User.class);
+
+
+                if(friendUser == null)
+                {
+                    //user does not exist, cannot be added as friend
+                    Toast.makeText(FriendlistActivity.this,
+                            "Error: could not fetch user.",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    String friendId = "";
+                    for(DataSnapshot friendSnapshot : dataSnapshot.getChildren()) {
+                        friendId = friendSnapshot.getKey();
+                        friendUser = friendSnapshot.getValue(User.class);
+                    }
+
+                    if(friendId.equals(userId))
+                        Toast.makeText(FriendlistActivity.this, "You can't add yourself as friend! (As much as you wish)", Toast.LENGTH_LONG).show();
+                    else
+                        friendExists(userId, friendId, friendUsername);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+            }
+        });
     }
 
     public String getUid() {
