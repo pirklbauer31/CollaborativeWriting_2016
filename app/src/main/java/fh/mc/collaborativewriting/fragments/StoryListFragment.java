@@ -83,9 +83,9 @@ public abstract class StoryListFragment extends Fragment {
                 });
                 //has the story been "liked"
                 if (model.stars.containsKey(getUid())) {
-                    viewHolder.starView.setImageResource(R.mipmap.ic_star_toggled);
+                    viewHolder.starView.setImageResource(R.drawable.ic_star_black_36dp);
                 } else {
-                    viewHolder.starView.setImageResource(R.drawable.ic_star_untoggled);
+                    viewHolder.starView.setImageResource(R.drawable.ic_star_border_black_36dp);
                 }
 
                 //bind story to viewholder and set OnClickListener

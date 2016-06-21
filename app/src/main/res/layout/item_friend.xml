@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
 
                 android:background="?attr/selectableItemBackground"
-                android:src="@android:drawable/ic_input_add"/>
+                android:src="@drawable/ic_check_black_24dp" />
 
             <ImageButton
                 android:id="@+id/remove_friend"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:background="?attr/selectableItemBackground"
-                android:src="@android:drawable/ic_delete"/>
+                android:src="@drawable/ic_close_black_24dp" />
 
         </LinearLayout>
 

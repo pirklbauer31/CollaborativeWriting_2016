@@ -1,6 +1,8 @@
 package fh.mc.collaborativewriting;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,11 +37,13 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     public static final String EXTRA_STORY_KEY = "story_key";
 
     //firebase references
-    private DatabaseReference mStoryReference;
-    private DatabaseReference mContributionReference;
+    private static DatabaseReference mStoryReference;
+    private static DatabaseReference mContributionReference;
     private ValueEventListener mStoryListener;
     private String mStoryKey;
     private ContributionAdapter mAdapter;
+    private static Story mStory;
+
 
     //UI
     private TextView mAuthorView;
@@ -66,11 +70,13 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         mContributionReference = FirebaseDatabase.getInstance().getReference()
                 .child("stories-comments").child(mStoryKey);
 
+
         //Init View
         mAuthorView = (TextView) findViewById(R.id.story_author);
         mDescriptionView = (TextView) findViewById(R.id.story_description);
         mTitleView = (TextView) findViewById(R.id.story_title);
         mContributionField = (EditText) findViewById(R.id.field_comment_text);
+
         Button mContributionButton = (Button) findViewById(R.id.button_contribute);
         mContributionsRecycler = (RecyclerView) findViewById(R.id.recycler_comments);
 
@@ -87,18 +93,17 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     protected void onStart() {
         super.onStart();
 
-
         // Add value event listener to the post
         // [START post_value_event_listener]
         ValueEventListener storyListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                Story story = dataSnapshot.getValue(Story.class);
+                mStory = dataSnapshot.getValue(Story.class);
                 // [START_EXCLUDE]
-                mAuthorView.setText(story.author);
-                mTitleView.setText(story.title);
-                mDescriptionView.setText(story.body);
+                mAuthorView.setText(mStory.author);
+                mTitleView.setText(mStory.title);
+                mDescriptionView.setText(mStory.body);
                 // [END_EXCLUDE]
             }
 
@@ -164,8 +169,11 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             super(itemView);
 
             contributionText = (TextView) itemView.findViewById(R.id.contribution_text);
+
+
         }
     }
+
 
     private static class ContributionAdapter extends RecyclerView.Adapter<CommentViewHolder> {
 
@@ -271,9 +279,40 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         }
 
         @Override
-        public void onBindViewHolder(CommentViewHolder holder, int position) {
-            Contribution contribution = mContributions.get(position);
+        public void onBindViewHolder(CommentViewHolder holder, final int position) {
+            final Contribution contribution = mContributions.get(position);
             holder.contributionText.setText(contribution.text);
+            //check if the current user is the author of this story to enable moderation
+            //TODO: add Moderators? (eher schon ein Wunschziel.. ^^)
+            if (mStory.uid.equals(getUid())) {
+                holder.contributionText.setOnLongClickListener(new View.OnLongClickListener() {
+
+                    @Override
+                    public boolean onLongClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                        builder.setMessage("Delete this contribution?");
+                        // Add the buttons
+                        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User clicked OK button
+                                //remove Contribution
+                                mContributionReference.child(mContributionIds.get(mContributions.indexOf(contribution))).removeValue();
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        });
+
+                        // Create the AlertDialog
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                        return false;
+                    }
+
+                });
+            }
         }
 
         @Override
