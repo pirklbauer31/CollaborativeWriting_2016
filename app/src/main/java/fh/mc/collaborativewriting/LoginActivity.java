@@ -151,6 +151,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 signInUserWithEmail();
             }
         });
@@ -269,33 +270,54 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             return;
         }
 
+        DatabaseReference myRef = mDatabase.getReference("users");
 
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+        Query searchForUserName=myRef.orderByChild("username").equalTo(mUsernameView.getText().toString());
+        searchForUserName.addListenerForSingleValueEvent(new ValueEventListener () {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    Toast.makeText(getApplicationContext(), "UserName doesnt Exist",
+                            Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "User exists");
+                    showProgress(false);
+                } else {
+                    mAuth.signInWithEmailAndPassword(mEmailView.getText().toString(), mPasswordView.getText().toString())
+                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithEmail", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        //TODO: Delete after testing!
-                        else {
-                            Toast.makeText(LoginActivity.this, "Signing in was successful!",
-                                    Toast.LENGTH_SHORT).show();
+                                    // If sign in fails, display a message to the user. If sign in succeeds
+                                    // the auth state listener will be notified and logic to handle the
+                                    // signed in user can be handled in the listener.
+                                    if (!task.isSuccessful()) {
+                                        Log.w(TAG, "signInWithEmail", task.getException());
+                                        Toast.makeText(LoginActivity.this, "Email doesnt exist",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                    //TODO: Delete after testing!
+                                    else {
+                                        Toast.makeText(LoginActivity.this, "Signing in was successful!",
+                                                Toast.LENGTH_SHORT).show();
 
-                        }
+                                    }
 
-                        // ...
-                    }
-                });
+                                    // ...
+                                }
+                            });
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
 
 
+        });
 
     }
 
@@ -335,27 +357,46 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         String username= mUsernameView.getText().toString();
 
         DatabaseReference myRef = mDatabase.getReference("users");
-        Query searchForUser= myRef.orderByChild("email").equalTo(email);
 
-        showProgress(true);
-
-        searchForUser.addListenerForSingleValueEvent(new ValueEventListener () {
+        Query searchForUserName=myRef.orderByChild("username").equalTo(username);
+        searchForUserName.addListenerForSingleValueEvent(new ValueEventListener () {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() != 0) {
-                    Toast.makeText(getApplicationContext(), "User already exists!",
+                    Toast.makeText(getApplicationContext(), "User already exists! (Username)",
                             Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "User exists");
                     showProgress(false);
                 } else {
-                    createUserwithEmail();
+                    DatabaseReference myRef = mDatabase.getReference("users");
+                    Query searchForUserMail= myRef.orderByChild("email").equalTo(mEmailView.getText().toString());
+
+                    showProgress(true);
+
+                    searchForUserMail.addListenerForSingleValueEvent(new ValueEventListener () {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getChildrenCount() != 0) {
+                                Toast.makeText(getApplicationContext(), "User already exists! (email)",
+                                        Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "User exists");
+                                showProgress(false);
+                            } else {
+                                createUserwithEmail();
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+
+
+                    });
                 }
 
             }
-
-
-
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -363,7 +404,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
 
         });
-
 
     }
 
