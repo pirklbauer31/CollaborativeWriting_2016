@@ -151,8 +151,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                signInUserWithEmail();
+                checkIfMailOrUser();
             }
         });
         mLoginFormView = findViewById(R.id.login_form);
@@ -185,11 +184,21 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             mEmailSearchButton.setVisibility(View.GONE);
             mLastnameView.setVisibility(View.GONE);
             mFirstnameView.setVisibility(View.GONE);
+            mUsernameView.setVisibility(View.GONE);
+            mEmailView.setHint("Email or Username");
         }else{
             mEmailSignInButton.setVisibility(View.GONE);
         }
 
 
+    }
+
+    void checkIfMailOrUser(){
+        if (Patterns.EMAIL_ADDRESS.matcher(mEmailView.getText().toString()).matches())
+            signInUserWithEmail(mEmailView.getText().toString());
+        else {
+            getEmailFromUser();
+        }
     }
 
     @Override
@@ -237,21 +246,16 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             valid = false;
             focusView=mEmailView;
         }
-        else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        else /*if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             mEmailView.setError(getString( R.string.error_invalid_email));
             valid = false;
             focusView=mEmailView;
         } else {
             mEmailView.setError(null);
-        }
+        }*/
 
         if (password.isEmpty() || password.length() < 4 ) {
             mPasswordView.setError(getString( R.string.error_invalid_password));
-            valid= false;
-        }
-
-        if (username.isEmpty() ) {
-            mPasswordView.setError(getString( R.string.error_username_required));
             valid= false;
         }
 
@@ -261,64 +265,122 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         return valid;
     }
 
-    private void signInUserWithEmail() {
+    private void signInUserWithEmail(String givenMail) {
 
-        String email= mEmailView.getText().toString();
+        final String email= givenMail;
         String password= mPasswordView.getText().toString();
 
-        if (!validateEmailPassword()) {
-            return;
+
+        if (validateEmailPassword()) {
+
+                mAuth.signInWithEmailAndPassword(givenMail, mPasswordView.getText().toString())
+                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+
+                                // If sign in fails, display a message to the user. If sign in succeeds
+                                // the auth state listener will be notified and logic to handle the
+                                // signed in user can be handled in the listener.
+                                if (!task.isSuccessful()) {
+                                    Log.w(TAG, "signInWithEmail", task.getException());
+                                    Toast.makeText(LoginActivity.this, "Email doesnt exist",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                //TODO: Delete after testing!
+                                else {
+                                    Toast.makeText(LoginActivity.this, "Signing in was successful!",
+                                            Toast.LENGTH_SHORT).show();
+
+                                }
+
+                                // ...
+                            }
+                        });
+
+            } /*else {
+                DatabaseReference myRef = mDatabase.getReference("users");
+
+                Query searchForUserName = myRef.orderByChild("username").equalTo(mEmailView.getText().toString());
+                searchForUserName.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getChildrenCount() == 0) {
+                            Toast.makeText(getApplicationContext(), "UserName doesnt Exist",
+                                    Toast.LENGTH_SHORT).show();
+                            showProgress(false);
+                        } else {
+                            getEmailFromUser();
+                            mAuth.signInWithEmailAndPassword(searchedEmail, mPasswordView.getText().toString())
+                                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+
+                                            // If sign in fails, display a message to the user. If sign in succeeds
+                                            // the auth state listener will be notified and logic to handle the
+                                            // signed in user can be handled in the listener.
+                                            if (!task.isSuccessful()) {
+                                                Log.w(TAG, "signInWithEmail", task.getException());
+                                                Toast.makeText(LoginActivity.this, "Email doesnt exist",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+                                            //TODO: Delete after testing!
+                                            else {
+                                                Toast.makeText(LoginActivity.this, "Signing in was successful!",
+                                                        Toast.LENGTH_SHORT).show();
+
+                                            }
+
+                                            // ...
+                                        }
+                                    });
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+
+                });
+            }*/
         }
 
+    String mail="";
+    private void getEmailFromUser(){
         DatabaseReference myRef = mDatabase.getReference("users");
+        Query userSearch = myRef.orderByChild("email");
 
-        Query searchForUserName=myRef.orderByChild("username").equalTo(mUsernameView.getText().toString());
-        searchForUserName.addListenerForSingleValueEvent(new ValueEventListener () {
+        userSearch.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() == 0) {
-                    Toast.makeText(getApplicationContext(), "UserName doesnt Exist",
-                            Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "User exists");
-                    showProgress(false);
-                } else {
-                    mAuth.signInWithEmailAndPassword(mEmailView.getText().toString(), mPasswordView.getText().toString())
-                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                User searchedUser = dataSnapshot.getValue(User.class);
 
-                                    // If sign in fails, display a message to the user. If sign in succeeds
-                                    // the auth state listener will be notified and logic to handle the
-                                    // signed in user can be handled in the listener.
-                                    if (!task.isSuccessful()) {
-                                        Log.w(TAG, "signInWithEmail", task.getException());
-                                        Toast.makeText(LoginActivity.this, "Email doesnt exist",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                    //TODO: Delete after testing!
-                                    else {
-                                        Toast.makeText(LoginActivity.this, "Signing in was successful!",
-                                                Toast.LENGTH_SHORT).show();
 
-                                    }
+                for (DataSnapshot userSnapshot: dataSnapshot.getChildren()
+                     ) {
 
-                                    // ...
-                                }
-                            });
+                    if (userSnapshot.child("username").getValue().toString().contentEquals(mEmailView.getText().toString())){
 
+                        signInUserWithEmail(userSnapshot.child("email").getValue().toString());                    }
                 }
+
 
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
             }
-
-
         });
-
+    }
+    public void mailReturner(String s){
+        mail=s;
+        mEmailView.setText(mail);
     }
 
     private void createUserwithEmail() {
