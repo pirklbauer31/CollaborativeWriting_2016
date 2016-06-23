@@ -2,10 +2,18 @@ package fh.mc.collaborativewriting;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,6 +24,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import fh.mc.collaborativewriting.models.Friend;
 import fh.mc.collaborativewriting.models.User;
 
 public class FriendlistActivity extends AppCompatActivity {
@@ -29,6 +41,10 @@ public class FriendlistActivity extends AppCompatActivity {
     private EditText mInputFriendAdd;
     private Button mSendFriendRequest;
 
+    private List<Friend> friendList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private FriendsAdapter mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +53,7 @@ public class FriendlistActivity extends AppCompatActivity {
 
         mInputFriendAdd = (EditText) findViewById(R.id.inputAddFriend);
         mSendFriendRequest = (Button) findViewById(R.id.cmdSendFriendRequest);
+
 
         //  initialize_database_ref
 
@@ -49,6 +66,16 @@ public class FriendlistActivity extends AppCompatActivity {
             }
         });
 
+        // prepare Recyclerview
+        recyclerView = (RecyclerView) findViewById(R.id.friend_recycler_view);
+
+        mAdapter = new FriendsAdapter(friendList);
+        RecyclerView.LayoutManager mLayoutManger = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManger);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+
+        prepareFriendData();
     }
 
     private void AddFriend ()
@@ -139,6 +166,8 @@ public class FriendlistActivity extends AppCompatActivity {
         */
         mDataBase.child("users").child(userId).child("friends").child(friendId).setValue(true);
         mDataBase.child("users").child(friendId).child("friends").child(userId).setValue(false);
+        mAdapter.notifyDataSetChanged();
+        mInputFriendAdd.setText("");
 
         //Toast.makeText(FriendlistActivity.this, friendId, Toast.LENGTH_LONG).show();
     }
@@ -211,7 +240,118 @@ public class FriendlistActivity extends AppCompatActivity {
         });
     }
 
+    public void prepareFriendData()
+    {
+        String userId = getUid();
+        Query friendRef = mDataBase.child("users").child(userId).child("friends");
+        friendRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot != null)
+                {
+                    friendList.clear();
+
+                    boolean friendAccepted = false;
+                    String friendId = "";
+                    for (DataSnapshot friendSnapshot : dataSnapshot.getChildren()) {
+                        friendId = friendSnapshot.getKey();
+                        friendAccepted = (boolean)friendSnapshot.getValue();
+
+                        addFriendToList(friendId, friendAccepted);
+                        System.out.println();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+            }
+        });
+    }
+
+    public void addFriendToList (final String friendId, final boolean friendAccepted)
+    {
+        Query singleFriendRef = mDataBase.child("users").child(friendId);
+        singleFriendRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot != null)
+                {
+                    User friendUser = dataSnapshot.getValue(User.class);
+                    String friendUsername = friendUser.username;
+                    String friendProfilepic = friendUser.profilePic;
+                    Friend friendToAdd = new Friend(friendUsername, friendProfilepic, friendAccepted, friendId);
+
+                    friendList.add(friendToAdd);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+            }
+        });
+    }
+
+    public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MyViewHolder> {
+        private List<Friend> friendList;
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+            public TextView usernameView;
+            public ImageView profileView;
+            public ImageButton acceptFriendView;
+            public ImageButton removeFriendView;
+
+            public MyViewHolder(View view) {
+                super(view);
+                usernameView = (TextView) itemView.findViewById(R.id.story_author);
+                profileView = (ImageView) itemView.findViewById(R.id.story_author_profile_pic);
+                acceptFriendView = (ImageButton) itemView.findViewById(R.id.accept_friend);
+                removeFriendView = (ImageButton) itemView.findViewById(R.id.remove_friend);
+            }
+        }
+
+        public FriendsAdapter(List<Friend> friendList) {
+            this.friendList = friendList;
+        }
+
+        @Override
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_friend, parent, false);
+
+            return new MyViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(MyViewHolder holder, int position) {
+            Friend friend = friendList.get(position);
+            holder.usernameView.setText(friend.username);
+            // todo set profile picture
+            if (friend.acceptedFriend){
+                holder.acceptFriendView.setVisibility(View.GONE);
+            }
+            else {
+                holder.acceptFriendView.setVisibility(View.VISIBLE);
+                //todo add OnClickListeners to Buttons
+                //holder.acceptFriendView.setOnClickListener(new View.OnClickListener());
+            }
+
+            holder.removeFriendView.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public int getItemCount() {
+            return friendList.size();
+        }
+
+    }
+
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 }
+
+
