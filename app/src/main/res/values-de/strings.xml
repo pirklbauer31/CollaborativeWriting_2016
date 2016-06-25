@@ -11,8 +11,9 @@
     <string name="action_sign_in"></string>
     <string name="action_register">Registrieren</string>
     <string name="action_settings">Einstellungen</string>
-    <string name="prompt_firstname">Vorname</string>
-    <string name="prompt_lastname">Nachname</string>
+    <string name="prompt_firstname">Vorname (optional)</string>
+    <string name="prompt_lastname">Nachname (optional)</string>
     <string name="prompt_password">Passwort</string>
     <string name="prompt_username">Benutzername</string>
+    <string name="contribute_to_this_story"></string>
 </resources>

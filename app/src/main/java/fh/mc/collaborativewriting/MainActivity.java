@@ -40,6 +40,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -64,7 +65,7 @@ public class MainActivity extends BaseActivity
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
-    private FirebaseDatabase mDatabase;
+    private DatabaseReference mDatabase;
     private FirebaseStorage mStorage;
     private StorageReference mStorageRef;
     private Uri mDownloadUrl = null;
@@ -124,6 +125,7 @@ public class MainActivity extends BaseActivity
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        mDatabase=FirebaseDatabase.getInstance().getReference();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -400,7 +402,7 @@ public class MainActivity extends BaseActivity
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(Uri.parse("gs://project-cow.appspot.com/"+selectedImage.getLastPathSegment()))
                 .build();
-        Log.d(TAG, "Kevin Pirklbauer Test 123");
+        Log.d(TAG, "UpdateProfilePic:");
         Log.d(TAG, selectedImage.getLastPathSegment());
 
         user.updateProfile(profileUpdates)
@@ -412,6 +414,8 @@ public class MainActivity extends BaseActivity
                         }
                     }
                 });
+        mDatabase.child("users").child(getUid()).child("profilePic").setValue("gs://project-cow.appspot.com/"+selectedImage.getLastPathSegment());
+
     }
     private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException {
 

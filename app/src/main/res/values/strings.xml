@@ -36,7 +36,7 @@
     <string name="titleHere">Title here!</string>
     <string name="inputDescription">Description:</string>
     <string name="descriptionHere">Description here!</string>
-    <string name="inputTags">Tags: (separate with ;)</string>
+    <string name="inputTags">Tags: (separate with \';\' )</string>
     <string name="tagsHere">tagx;tagy</string>
     <string name="inputPrivacy">Privacy:</string>
     <string name="inviteFriends">Invite Friends:</string>

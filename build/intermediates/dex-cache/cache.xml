@@ -2,228 +2,214 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.4.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="ec75036c3c52e451d0cde50a5aedaf5fd32354a0">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-23.4.0_01c0804e6767b37327dd9a6b3ca6c298451a0040\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-common\9.0.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="42df48c7305b08b14fa0e84561091b0c24d70d26">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.firebase-firebase-common-9.0.0_7698dad2dd7011c245e24047f63f7270741b73b7\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.4.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.4.0_7460bedc2a9845ea1a07adc34b267466b23adc5f\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="2a2b29958dc283ea05ef22f485b710f86d11d42e">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_6ed70c188739e75b4b0095c4de38916d897652c9\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-23.4.0_7230bc5b863d4f37ed0e6118527c75357cb0fbe3\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\9.0.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="6f65c144283b31b4b9a70e6e7aa4c4a1c897d4b8">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-base-9.0.0_e00f45d2ef72cde1066bc0b38c4067c0a1896ab0\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-storage\9.0.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="733964f04c339e425439545b1d172c23b53f8c13">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.firebase-firebase-storage-9.0.0_4c091cd1a08ba61105cc54b318424583a5d0d8ac\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.4.0_6b418cc99de7058b4091d0967b9443051c98011a\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\9.0.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="1941832901fc4e7a93300b53762e9f65d7650b99">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-tasks-9.0.0_43eb97736a5505a8f68c296eabcedee3ed2d1d2d\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-storage-common\9.0.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="ed16ff19f0a9515604a0f08104ca0317b82e29e3">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.firebase-firebase-storage-common-9.0.0_447793880ad3253f66dc286a750ca23baaf290b3\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-iid\9.0.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="ea4b54dcbfe5ac05efb0a314105f07258118d3a7">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.firebase-firebase-iid-9.0.0_93bf7451f8b5209b59952638132fd3767bb12230\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-database\9.0.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="32a5a566ae197603d0bed3e6d1d275f6a771564e">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.firebase-firebase-database-9.0.0_8fbc82634f794401c9ea88f851315e9c4e457355\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\customtabs\23.4.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="2d1eaa9e0b98f8fc4c2b989d9b30d4f1480648ac">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-customtabs-23.4.0_08ef81b5bc8f5f032d9b35b365583aea4294bba1\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-auth-module\9.0.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="24536a7b97926a9c155c88425da6875adeb11b51">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.firebase-firebase-auth-module-9.0.0_9a700b4db871070f45c0a17602c694538c4b0e79\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.4.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.4.0_e638599d95256d4916882f316ad552768c723206\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\4.13.1\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="ad4d4c5914b7b25e51e66f8e2d1b842c67dd63a9">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.facebook.android-facebook-android-sdk-4.13.1_8e7c791700497603fe2810a8e8d4a0a202d6f3f9\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.4.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-23.4.0_b3edf33a4f78d4b51e2663ff54e27f4467fcf191\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.4.0\support-annotations-23.4.0.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-23.4.0_398bb471242a5a41ddfeef7760c58e442ab63a67\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics\9.0.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="4ef8ab5fee042023018249474bc93bd4b2b9c17e">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.firebase-firebase-analytics-9.0.0_183d3612ec79ea51ca80cac207e39c3d2116ed37\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.firebaseui\firebase-ui-database\0.4.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="c76f6507a42aec274953e882bf3c49a570843ef5">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.firebaseui-firebase-ui-database-0.4.0_d6fa1aa9ec2582932fdd8fa86289937ec5960aa8\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics-impl\9.0.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="0dc8ab07eeceda5e99b305c8069765056b6e5c9d">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.firebase-firebase-analytics-impl-9.0.0_421f8c7aca7be28230e40926e23d3e9773aa2835\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-crash\9.0.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="7e467a973b749c6390a5991c9a8edbde96fc10c9">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.firebase-firebase-crash-9.0.0_6cd36cace43838c412c648c2fc6a9b0156744e0c\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\design\23.4.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="5326d9a850d491714fef8cbfaa9ea3416f0bf0d2">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-23.4.0_a90d8e623fa5da4bea413e0e614491c770e42f3b\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="0c2c5bb821771ae714c056ea317db679d5ba090b">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_195d8b06a4e8b6eb7252aaa82432d6b02a1e6c91\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-database-connection\9.0.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="ef5c5c2afbd174d55cf1cfcac7d0346cbc4c1322">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.firebase-firebase-database-connection-9.0.0_295c4cb5118f07105193fdc3f767c52aa8f9efc0\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-auth-common\9.0.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="5f0f6913a208a126269aaa68004ed0329a832c5b">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.firebase-firebase-auth-common-9.0.0_368401a5795d0e3a846181b935c0fb73ef7469c6\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-auth\9.0.0\jars\classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="70ddab48594608953b20164b82f1f890a9a8174a">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.firebase-firebase-auth-9.0.0_3124045dd9228175014b080a9e4c9c6921cb1ad5\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.4.0\jars\classes.jar"
-        jumboMode="true"
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.4.0\jars\classes.jar"
+        jumboMode="false"
         revision="23.0.3"
         sha1="d9ecde39b460470e655de6e47c05573d2d5a8bfb">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-cardview-v7-23.4.0_aca93cfc2ef7e34642cf83f36d853fafccf35a35\classes.dex" />
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.android.support-cardview-v7-23.4.0_bb4849f696666a6bb07fa91e2acd2edbb558e101.jar" />
     </item>
     <item
-        jar="C:\Users\Felix\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-tasks\1.4.0\d85884acf6810a3bbbecb587f239005cbc846dc4\bolts-tasks-1.4.0.jar"
-        jumboMode="true"
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\design\23.4.0\jars\classes.jar"
+        jumboMode="false"
         revision="23.0.3"
-        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\bolts-tasks-1.4.0_88e417c6c45f6759a8b2e003e79ac30d8a57f609\classes.dex" />
+        sha1="5326d9a850d491714fef8cbfaa9ea3416f0bf0d2">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.android.support-design-23.4.0_c0d372f6b92c24655046d3fe108bd8c49b25db03.jar" />
     </item>
     <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\9.0.0\jars\classes.jar"
-        jumboMode="true"
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\9.0.0\jars\classes.jar"
+        jumboMode="false"
         revision="23.0.3"
-        sha1="cc178928721f3222b3b06bdfbd9497378ccb9792">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-basement-9.0.0_d53f3119b34a300d68f1223596a9f2912d0f6388\classes.dex" />
+        sha1="1941832901fc4e7a93300b53762e9f65d7650b99">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-tasks-9.0.0_728f2225337327d05f17adb8ce24ce3179be8eb9.jar" />
     </item>
     <item
-        jar="C:\Users\Felix\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-applinks\1.4.0\8ad21bf21784dacce5f2043afb97218cc377e835\bolts-applinks-1.4.0.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="8ad21bf21784dacce5f2043afb97218cc377e835">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\bolts-applinks-1.4.0_10ec38e3d22f5feaf22b5630bb900747687cb7bc\classes.dex" />
-    </item>
-    <item
-        jar="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\9.0.0\jars\classes.jar"
-        jumboMode="true"
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-appindexing\9.0.0\jars\classes.jar"
+        jumboMode="false"
         revision="23.0.3"
         sha1="4431efe5d0f67fab36a698dde725946b33a6bf4a">
-        <dex dex="C:\Users\Felix\Project_Cow\CollaborativeWriting_2016\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-appindexing-9.0.0_9563d63bedf3ad2ab0746247192f14402dda1e9b\classes.dex" />
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-appindexing-9.0.0_5bfebbd6ea12aaa1ebf58a88efc35d0e3dd8ffba.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-storage-common\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="ed16ff19f0a9515604a0f08104ca0317b82e29e3">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-storage-common-9.0.0_cc326aeadf61d1c6571b1fc3abaa9ef4904b9332.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.4.0_1be63ea69536564f1e550c188374407684445bd7.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-23.4.0_76535cf525b89261c989df7e373b36be588bb305.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-database-connection\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="ef5c5c2afbd174d55cf1cfcac7d0346cbc4c1322">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-database-connection-9.0.0_ad442e5a88cdc952cd2178daefb7067a8fe34ee0.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.4.0\support-annotations-23.4.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\support-annotations-23.4.0_14f133226e563e0807ad525a4f2d421737db3e1d.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.firebaseui\firebase-ui-database\0.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="c76f6507a42aec274953e882bf3c49a570843ef5">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.firebaseui-firebase-ui-database-0.4.0_52f2e23297ef585cb74a17b7836adff030adddaf.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="6f65c144283b31b4b9a70e6e7aa4c4a1c897d4b8">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-base-9.0.0_a407c1df6d37ad969929a3a68c164ce63914c3d5.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\internal_impl-23.4.0_d1d17a8fc5984e5f5a2a1555b69c1357f9919094.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-database\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="32a5a566ae197603d0bed3e6d1d275f6a771564e">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-database-9.0.0_de2bd8fc6d024caf78af27c0a4d332e4b2549243.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="4ef8ab5fee042023018249474bc93bd4b2b9c17e">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-analytics-9.0.0_738c5a239780d311ebed77c9b7508c765a8e2f80.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-storage\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="733964f04c339e425439545b1d172c23b53f8c13">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-storage-9.0.0_12cce1dce1b44327b7ad295f51212391266c04bd.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-common\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="42df48c7305b08b14fa0e84561091b0c24d70d26">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-common-9.0.0_430e56bc35a129368a168b1e7b704370b9f659ab.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-auth-common\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="5f0f6913a208a126269aaa68004ed0329a832c5b">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-auth-common-9.0.0_980f17d48b0327ce8bf358b6556e6e6213a85102.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-auth\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="70ddab48594608953b20164b82f1f890a9a8174a">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-auth-9.0.0_baf67947b93f5b71722ac1ae0970c58f0781e04c.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-23.4.0_fef8c09f772d3fff9acf8ef3ae9b24fe0dc1f6b6.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="cc178928721f3222b3b06bdfbd9497378ccb9792">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-basement-9.0.0_ec04bbf4fbcd516316b193746d50733a4ffbde92.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="ec75036c3c52e451d0cde50a5aedaf5fd32354a0">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-23.4.0_fbea8278eb34ac68de521252540a2cc82c4cb9ba.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-applinks\1.4.0\8ad21bf21784dacce5f2043afb97218cc377e835\bolts-applinks-1.4.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="8ad21bf21784dacce5f2043afb97218cc377e835">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\bolts-applinks-1.4.0_df001678a68cf038fe35e05d4ea81f81f5ed2ab3.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.4.0_4179bd8c24d20a134bb2a843bd29b5015c8c6a21.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-analytics-impl\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="0dc8ab07eeceda5e99b305c8069765056b6e5c9d">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-analytics-impl-9.0.0_a237c6ecbbb859868b377c14fe65383fbb6401ab.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\4.13.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="ad4d4c5914b7b25e51e66f8e2d1b842c67dd63a9">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.facebook.android-facebook-android-sdk-4.13.1_3adf0edbbe56e2dcc00d60eafede6d9886b39914.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-tasks\1.4.0\d85884acf6810a3bbbecb587f239005cbc846dc4\bolts-tasks-1.4.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\bolts-tasks-1.4.0_9edb55a75881f53b6873780c2a8ff74777acb783.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.android.support\customtabs\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="2d1eaa9e0b98f8fc4c2b989d9b30d4f1480648ac">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.android.support-customtabs-23.4.0_86ae8e6d89f08cfc4c27de953087b709fcbefb73.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-iid\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="ea4b54dcbfe5ac05efb0a314105f07258118d3a7">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-iid-9.0.0_e725d0e4cfe59cae0ce03e43ec1e97eb3c5a0c11.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-crash\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="7e467a973b749c6390a5991c9a8edbde96fc10c9">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-crash-9.0.0_1115cee36caa7844cce1d9f84b45ba3757c22f3b.jar" />
+    </item>
+    <item
+        jar="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\exploded-aar\com.google.firebase\firebase-auth-module\9.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="24536a7b97926a9c155c88425da6875adeb11b51">
+        <dex dex="C:\Users\Mark\Dropbox\FH\2_Semester\Project_CoW\CollaborativeWriting_2016\app\build\intermediates\pre-dexed\debug\com.google.firebase-firebase-auth-module-9.0.0_b1fe09c84a67377f9cbd5aeca9ec48497c7d1267.jar" />
     </item>
 
 </items>
