@@ -166,7 +166,7 @@ public class FriendlistActivity extends AppCompatActivity {
         */
         mDataBase.child("users").child(userId).child("friends").child(friendId).setValue(true);
         mDataBase.child("users").child(friendId).child("friends").child(userId).setValue(false);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyItemInserted(friendList.size());
         mInputFriendAdd.setText("");
 
         //Toast.makeText(FriendlistActivity.this, friendId, Toast.LENGTH_LONG).show();
@@ -326,7 +326,7 @@ public class FriendlistActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
+        public void onBindViewHolder(MyViewHolder holder, final int position) {
             Friend friend = friendList.get(position);
             holder.usernameView.setText(friend.username);
             // todo set profile picture
@@ -336,10 +336,21 @@ public class FriendlistActivity extends AppCompatActivity {
             else {
                 holder.acceptFriendView.setVisibility(View.VISIBLE);
                 //todo add OnClickListeners to Buttons
-                //holder.acceptFriendView.setOnClickListener(new View.OnClickListener());
+                holder.acceptFriendView.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        acceptFriendRequest(position);
+                    }
+                });
             }
 
             holder.removeFriendView.setVisibility(View.VISIBLE);
+            holder.removeFriendView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    removeFriend(position);
+                }
+            });
         }
 
         @Override
@@ -347,6 +358,31 @@ public class FriendlistActivity extends AppCompatActivity {
             return friendList.size();
         }
 
+    }
+
+    public void acceptFriendRequest (int positionOfFriend)
+    {
+        Friend friendToAccept = friendList.get(positionOfFriend);
+        String userId = getUid();
+
+        //write changes in database and in list item
+        mDataBase.child("users").child(userId).child("friends").child(friendToAccept.userId).setValue(true);
+        friendToAccept.acceptedFriend = true;
+
+        friendList.set(positionOfFriend, friendToAccept);
+        mAdapter.notifyItemChanged(positionOfFriend);
+    }
+
+    public void removeFriend (int positionOfFriend)
+    {
+        Friend friendToRemove = friendList.get(positionOfFriend);
+        String userId = getUid();
+
+        mDataBase.child("users").child(userId).child("friends").child(friendToRemove.userId).removeValue();
+        mDataBase.child("users").child(friendToRemove.userId).child("friends").child(userId).removeValue();
+
+        friendList.remove(positionOfFriend);
+        mAdapter.notifyItemRemoved(positionOfFriend);
     }
 
     public String getUid() {
