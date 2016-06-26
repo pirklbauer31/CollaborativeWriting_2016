@@ -55,7 +55,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/story_author_layout"
         android:layout_marginLeft="5dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="16dp" />
 
 
 
@@ -66,12 +67,20 @@
         android:layout_below="@id/post_text_layout"
         android:layout_above="@+id/story_contribution_form"
         android:id="@+id/detail_story_contributions"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
         >
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_comments"
+
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/item_contribution" />
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_contribution" />
+        </GridLayout>
     </ScrollView>
     <LinearLayout
         android:id="@+id/story_contribution_form"
@@ -88,7 +97,9 @@
             android:layout_weight="0.8"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:hint="@string/contribute_to_this_story" />
+
+            android:hint="@string/contribute_to_this_story"
+            android:minLines="1" />
 
 
         <Button

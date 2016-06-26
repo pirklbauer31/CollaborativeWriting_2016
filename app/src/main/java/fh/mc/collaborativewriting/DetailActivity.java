@@ -3,9 +3,10 @@ package fh.mc.collaborativewriting;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -86,7 +89,23 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                 postContribution();
             }
         });
-        mContributionsRecycler.setLayoutManager(new LinearLayoutManager(this));
+
+        final GridLayoutManager manager = new GridLayoutManager(this, 5);
+        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                int length = mAdapter.mContributions.get(position).text.length();
+                if (length < 7)
+                    return 1;
+                else if (length > 7 * manager.getSpanCount())
+                    return manager.getSpanCount();
+                else
+                    return (mAdapter.mContributions.get(position).text.length() / 7);
+            }
+        });
+
+        mContributionsRecycler.setLayoutManager(manager);
+
     }
 
     @Override
@@ -145,7 +164,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
                         //new contribution object
                         String contributionText = mContributionField.getText().toString();
-                        Contribution contribution = new Contribution(uid, authorName, contributionText);
+                        Contribution contribution = new Contribution(uid, authorName, contributionText, user.userColor);
 
                         //push comment
                         mContributionReference.push().setValue(contribution);
@@ -160,6 +179,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                     }
                 });
     }
+
 
     private static class CommentViewHolder extends RecyclerView.ViewHolder {
 
@@ -282,21 +302,28 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         public void onBindViewHolder(CommentViewHolder holder, final int position) {
             final Contribution contribution = mContributions.get(position);
             holder.contributionText.setText(contribution.text);
+
+            //is it a really good comment?
+            if (contribution.upvoteCount > 2)
+                holder.contributionText.setTextColor(Color.parseColor("#FFD600"));
+            else
+                holder.contributionText.setTextColor(contribution.color);
             //check if the current user is the author of this story to enable moderation
             //TODO: add Moderators? (eher schon ein Wunschziel.. ^^)
-            if (mStory.uid.equals(getUid())) {
+            //if (mStory.uid.equals(getUid()) || contribution.uid.equals(getUid())) {
                 holder.contributionText.setOnLongClickListener(new View.OnLongClickListener() {
 
                     @Override
                     public boolean onLongClick(View v) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                        builder.setMessage("Delete this contribution?");
+                        builder.setMessage("Upvote this contribution?");
                         // Add the buttons
                         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User clicked OK button
                                 //remove Contribution
-                                mContributionReference.child(mContributionIds.get(mContributions.indexOf(contribution))).removeValue();
+                                //mContributionReference.child(mContributionIds.get(mContributions.indexOf(contribution))).removeValue();
+                                onUpvoteClicked(mContributionIds.get(mContributions.indexOf(contribution)));
                             }
                         });
                         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -312,7 +339,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                     }
 
                 });
-            }
+            //}
         }
 
         @Override
@@ -324,6 +351,37 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             if (mChildEventListener != null) {
                 mDatabaseReference.removeEventListener(mChildEventListener);
             }
+        }
+
+        private void onUpvoteClicked(String cuid) {
+            mContributionReference.child(cuid).runTransaction(new Transaction.Handler() {
+                @Override
+                public Transaction.Result doTransaction(MutableData mutableData) {
+                    Contribution c = mutableData.getValue(Contribution.class);
+                    if (c == null) {
+                        return Transaction.success(mutableData);
+                    }
+
+                    if (c.upvotes.containsKey(getUid())) {
+                        //unvote comment
+                        c.upvoteCount--;
+                        c.upvotes.remove(getUid());
+                    } else {
+                        //upvote comment
+                        c.upvoteCount++;
+                        c.upvotes.put(getUid(), true);
+                    }
+
+                    //Set value
+                    mutableData.setValue(c);
+                    return Transaction.success(mutableData);
+                }
+
+                @Override
+                public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                    Log.d(TAG, "contributionTransaction complete:" + databaseError);
+                }
+            });
         }
     }
 }

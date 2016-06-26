@@ -75,9 +75,10 @@ public class CreateStoryActivity extends BaseActivity {
 
         //  initialize_database_ref
         mDataBase = FirebaseDatabase.getInstance().getReference();
-        Button mEmailRegisterButton = (Button) findViewById(R.id.inputCreate);
+        Button createStoryButton = (Button) findViewById(R.id.inputCreate);
 
-        mEmailRegisterButton.setOnClickListener(new View.OnClickListener() {
+
+        createStoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createStory();
@@ -143,7 +144,7 @@ public class CreateStoryActivity extends BaseActivity {
         String key = mDataBase.child("posts").push().getKey();
 
         //Split tags and store into a list
-        ArrayList<String> tagList = new ArrayList<String>(Arrays.asList(tags.split("\\s*;\\s*")));
+        ArrayList<String> tagList = new ArrayList<>(Arrays.asList(tags.split("\\s*;\\s*")));
 
 
         Story story = new Story(userId, username, title, description, tagList);

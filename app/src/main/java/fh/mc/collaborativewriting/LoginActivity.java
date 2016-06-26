@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -23,11 +24,6 @@ import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -46,7 +42,6 @@ import com.google.firebase.database.ValueEventListener;
 import fh.mc.collaborativewriting.models.User;
 
 import static fh.mc.collaborativewriting.R.string.error_registration_failed;
-import static fh.mc.collaborativewriting.R.string.google_api_key;
 
 /**
  * A login screen that offers login via email/password.
@@ -81,6 +76,8 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     private EditText mLastnameView;
 
 
+    private Resources res;
+    private int[] userColors;
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
@@ -94,6 +91,11 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //FacebookSdk.sdkInitialize(getApplicationContext());
+
+        //get predefined userColors
+        res = getResources();
+        userColors = res.getIntArray(R.array.usercolors);
+
 
         setContentView(R.layout.activity_login);
 
@@ -495,8 +497,9 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                         }
                     });
 
+
             User userObject= new User(username, email,firstname,lastname
-                    , "gs://project-cow.appspot.com/testProfile.png");
+                    , "gs://project-cow.appspot.com/testProfile.png", userColors[(int) (Math.random() * userColors.length)]);
             DatabaseReference myRef = mDatabase.getReference("users");
             myRef.child(uid).setValue(userObject);
         }
