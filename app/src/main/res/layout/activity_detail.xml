@@ -97,7 +97,7 @@
             android:layout_weight="0.8"
             android:layout_height="wrap_content"
             android:maxLines="1"
-
+            android:singleLine="true"
             android:hint="@string/contribute_to_this_story"
             android:minLines="1" />
 

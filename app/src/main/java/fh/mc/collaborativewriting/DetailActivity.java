@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -47,6 +48,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private ContributionAdapter mAdapter;
     private static Story mStory;
 
+    //TODO: more options needed?
+    private static ArrayList<String> commentOptions=new ArrayList<>();
 
     //UI
     private TextView mAuthorView;
@@ -54,7 +57,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private TextView mDescriptionView;
     private EditText mContributionField;
     private RecyclerView mContributionsRecycler;
-
+    private static Button mContributionButton;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,27 +83,32 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         mTitleView = (TextView) findViewById(R.id.story_title);
         mContributionField = (EditText) findViewById(R.id.field_comment_text);
 
-        Button mContributionButton = (Button) findViewById(R.id.button_contribute);
+        mContributionButton = (Button) findViewById(R.id.button_contribute);
         mContributionsRecycler = (RecyclerView) findViewById(R.id.recycler_comments);
+
+
+        commentOptions.add("Upvote");
 
         mContributionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postContribution();
+                if (mContributionField.getText().length() >0)
+                    postContribution();
             }
         });
 
-        final GridLayoutManager manager = new GridLayoutManager(this, 5);
+        final GridLayoutManager manager = new GridLayoutManager(this, 6);
+        final int multiplier=6;
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 int length = mAdapter.mContributions.get(position).text.length();
-                if (length < 7)
+                if (length < multiplier)
                     return 1;
-                else if (length > 7 * manager.getSpanCount())
+                else if (length > multiplier * manager.getSpanCount())
                     return manager.getSpanCount();
                 else
-                    return (mAdapter.mContributions.get(position).text.length() / 7);
+                    return (mAdapter.mContributions.get(position).text.length() / multiplier);
             }
         });
 
@@ -164,13 +172,15 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
                         //new contribution object
                         String contributionText = mContributionField.getText().toString();
-                        Contribution contribution = new Contribution(uid, authorName, contributionText, user.userColor);
+                        Contribution contribution = new Contribution(authorName, uid, contributionText, user.userColor);
 
                         //push comment
                         mContributionReference.push().setValue(contribution);
 
                         //clear field
                         mContributionField.setText(null);
+
+                        mContributionButton.setEnabled(false);
                     }
 
                     @Override
@@ -218,6 +228,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                     // A new comment has been added, add it to the displayed list
                     Contribution contribution = dataSnapshot.getValue(Contribution.class);
 
+
+
                     // [START_EXCLUDE]
                     // Update RecyclerView
                     mContributionIds.add(dataSnapshot.getKey());
@@ -241,6 +253,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                         // Replace with the new data
                         mContributions.set(commentIndex, newContribution);
 
+
+
                         // Update the RecyclerView
                         notifyItemChanged(commentIndex);
                     } else {
@@ -260,6 +274,11 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                     // [START_EXCLUDE]
                     int contributionIndex = mContributionIds.indexOf(contributionKey);
                     if (contributionIndex > -1) {
+
+                        //enable commentButton if comment is not from the user
+                        if ((contributionIndex==mContributionIds.size()-1) && mContributions.get(contributionIndex).uid.equals(getUid()))
+                            mContributionButton.setEnabled(true);
+
                         // Remove data from the list
                         mContributionIds.remove(contributionIndex);
                         mContributions.remove(contributionIndex);
@@ -303,9 +322,18 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             final Contribution contribution = mContributions.get(position);
             holder.contributionText.setText(contribution.text);
 
+            //is comment from current user? --> disable post-button
+            if (!contribution.uid.equals(getUid()))
+                mContributionButton.setEnabled(true);
+            else
+                mContributionButton.setEnabled(false);
             //is it a really good comment?
-            if (contribution.upvoteCount > 2)
+            //TODO:
+            if (contribution.upvoteCount > 2) {
                 holder.contributionText.setTextColor(Color.parseColor("#FFD600"));
+                holder.contributionText.setTypeface(null, Typeface.BOLD);
+
+            }
             else
                 holder.contributionText.setTextColor(contribution.color);
             //check if the current user is the author of this story to enable moderation
@@ -315,22 +343,30 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
                     @Override
                     public boolean onLongClick(View v) {
+                        commentOptions.clear();
                         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                        builder.setMessage("Upvote this contribution?");
-                        // Add the buttons
-                        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User clicked OK button
-                                //remove Contribution
-                                //mContributionReference.child(mContributionIds.get(mContributions.indexOf(contribution))).removeValue();
-                                onUpvoteClicked(mContributionIds.get(mContributions.indexOf(contribution)));
-                            }
-                        });
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User cancelled the dialog
-                            }
-                        });
+
+                        commentOptions.add("Upvote");
+                        if (contribution.uid.equals(getUid()) || mStory.uid.equals(getUid())) {
+                            commentOptions.add("Delete");
+                        }
+
+
+
+                        String[] options= commentOptions.toArray(new String[0]);
+                        builder.setTitle("Author: "+ contribution.author)
+                                .setItems(options, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //comment upvoted
+                                        if (which==0) {
+                                            onUpvoteClicked(mContributionIds.get(mContributions.indexOf(contribution)));
+                                        } else if (which==1) {
+                                            //delete comment
+                                            mContributionReference.child(mContributionIds.get(mContributions.indexOf(contribution))).removeValue();
+                                        }
+                                    }
+                                });
 
                         // Create the AlertDialog
                         AlertDialog dialog = builder.create();

@@ -21,7 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Widget.PopupMenu.Large"
-            tools:text="Sample contribution text" />
+            tools:text="Sample contribution text"
+           />
 
     </FrameLayout>
 
