@@ -299,57 +299,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                                 // ...
                             }
                         });
-
-            } /*else {
-                DatabaseReference myRef = mDatabase.getReference("users");
-
-                Query searchForUserName = myRef.orderByChild("username").equalTo(mEmailView.getText().toString());
-                searchForUserName.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.getChildrenCount() == 0) {
-                            Toast.makeText(getApplicationContext(), "UserName doesnt Exist",
-                                    Toast.LENGTH_SHORT).show();
-                            showProgress(false);
-                        } else {
-                            getEmailFromUser();
-                            mAuth.signInWithEmailAndPassword(searchedEmail, mPasswordView.getText().toString())
-                                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<AuthResult> task) {
-                                            Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-
-                                            // If sign in fails, display a message to the user. If sign in succeeds
-                                            // the auth state listener will be notified and logic to handle the
-                                            // signed in user can be handled in the listener.
-                                            if (!task.isSuccessful()) {
-                                                Log.w(TAG, "signInWithEmail", task.getException());
-                                                Toast.makeText(LoginActivity.this, "Email doesnt exist",
-                                                        Toast.LENGTH_SHORT).show();
-                                            }
-                                            //TODO: Delete after testing!
-                                            else {
-                                                Toast.makeText(LoginActivity.this, "Signing in was successful!",
-                                                        Toast.LENGTH_SHORT).show();
-
-                                            }
-
-                                            // ...
-                                        }
-                                    });
-
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-
-
-                });
-            }*/
+            }
         }
 
     String mail="";

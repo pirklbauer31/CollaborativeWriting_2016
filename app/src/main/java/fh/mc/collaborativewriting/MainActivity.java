@@ -1,5 +1,7 @@
 package fh.mc.collaborativewriting;
 
+import android.*;
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -31,6 +34,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,8 +50,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import fh.mc.collaborativewriting.fragments.MyStoriesFragment;
 import fh.mc.collaborativewriting.fragments.RecentStoryFragment;
@@ -225,11 +233,11 @@ public class MainActivity extends BaseActivity
                             @Override
                             public void onClick(View v) {
 
-                                if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                                if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
                                         != PackageManager.PERMISSION_GRANTED) {
 
                                     // Should we show an explanation?
-                                    if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                                    if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
                                         // Show an expanation to the user *asynchronously* -- don't block
                                         // this thread waiting for the user's response! After the user
@@ -239,7 +247,7 @@ public class MainActivity extends BaseActivity
 
                                         // No explanation needed, we can request the permission.
 
-                                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                                 MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
 
                                         // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
@@ -346,12 +354,31 @@ public class MainActivity extends BaseActivity
     @Override
     public void onStop() {
         super.onStop();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://fh.mc.collaborativewriting/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.disconnect();
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
         //check if device is connected to the internet
         View parentLayout = findViewById(R.id.fab);
         if (!isOnline()) {
@@ -363,6 +390,19 @@ public class MainActivity extends BaseActivity
         mAuth.addAuthStateListener(mAuthListener);
 
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://fh.mc.collaborativewriting/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
     }
 
     private void logOutUser() {
@@ -384,8 +424,10 @@ public class MainActivity extends BaseActivity
                     try {
                         imageStream = getContentResolver().openInputStream(selectedImage);
                         yourSelectedImage = decodeUri(selectedImage);
-                        uploadFromUri(selectedImage);
-                        updateProfilePic(selectedImage);
+                        saveImageLocal(yourSelectedImage, selectedImage);
+                        Log.d(TAG,Environment.getExternalStorageDirectory().getAbsolutePath().toString()+"/Project_CoW/"+selectedImage.getLastPathSegment());
+                        uploadFromUri(Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath().toString()+"/Project_CoW/"+selectedImage.getLastPathSegment()+".PNG"));
+                        //updateProfilePic(Uri.parse(Environment.getExternalStorageDirectory().toString()+selectedImage.getLastPathSegment()+"_CoW"));
                         img.setImageBitmap(yourSelectedImage);
 
 
@@ -394,6 +436,69 @@ public class MainActivity extends BaseActivity
                     }
                 }
         }
+    }
+
+    public static boolean canWriteOnExternalStorage() {
+        // get the state of your external storage
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            // if storage is mounted return true
+            Log.d(TAG, "Yes, can write to external storage.");
+            return true;
+        }
+        return false;
+    }
+
+    private void saveImageLocal (Bitmap bmp, Uri u){
+        if (canWriteOnExternalStorage()) {
+            OutputStream output = null;
+            //Find the SD Card path
+            // File filePath = Environment.getExternalStorageDirectory();
+            // Create a new folder in SD Card
+            File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath().toString() + "/Project_CoW/");
+            if (!dir.exists())
+                dir.mkdirs();
+
+            // Create a name for the saved image
+            File file = (File) new File(dir, u.getLastPathSegment() + ".PNG");
+
+            try {
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                output = new FileOutputStream(file);
+
+                // Compress into png format image from 0% - 100%
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, output);
+                output.flush();
+                output.close();
+                // Show a toast message on successful save
+                Toast.makeText(MainActivity.this, "Image Saved to SD Card",
+                        Toast.LENGTH_SHORT).show();
+
+
+            } catch (FileNotFoundException e) {
+
+                e.printStackTrace();
+
+            } catch (IOException e) {
+            }
+        /*File sd = Environment.getExternalStorageDirectory();
+        File dest = new File(sd, u.getLastPathSegment()+"_CoW");
+
+        try {
+            FileOutputStream out = new FileOutputStream(dest);
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.flush();
+            out.close();
+            Log.d(TAG, "Profile Pic Saved Locally");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "Save Pic Locally failed");
+        }*/
+        } else
+            Toast.makeText(MainActivity.this, "Image Saving failed",
+                    Toast.LENGTH_SHORT).show();
     }
 
     private void updateProfilePic(Uri selectedImage){
@@ -425,7 +530,7 @@ public class MainActivity extends BaseActivity
         BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o);
 
         // The new size we want to scale to
-        final int REQUIRED_SIZE = 140;
+        final int REQUIRED_SIZE = 90;
 
         // Find the correct scale value. It should be the power of 2.
         int width_tmp = o.outWidth, height_tmp = o.outHeight;
