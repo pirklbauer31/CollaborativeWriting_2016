@@ -42,8 +42,8 @@
     <string name="inviteFriends">Invite Friends:</string>
 
     <string-array name="privacySpinner">
-        <item>Private</item>
         <item>Public</item>
+        <item>Friends-only</item>
     </string-array>
 
     <!-- Friendlist -->

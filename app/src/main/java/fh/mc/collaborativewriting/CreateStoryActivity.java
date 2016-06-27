@@ -41,6 +41,7 @@ public class CreateStoryActivity extends BaseActivity {
     private EditText mTitle;
     private EditText mDescription;
     private EditText mTags;
+    private Spinner mFriendOnly;
 
 
     @Override
@@ -58,14 +59,14 @@ public class CreateStoryActivity extends BaseActivity {
 
 
         //Setting up privacy input spinner
-        Spinner spinner = (Spinner) findViewById(R.id.inputPrivacy);
+        mFriendOnly = (Spinner) findViewById(R.id.inputPrivacy);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.privacySpinner, R.layout.spinner_item_privacy);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item_privacy);
         // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        mFriendOnly.setAdapter(adapter);
 
 
         mTags = (EditText) findViewById(R.id.inputTags);
@@ -94,6 +95,9 @@ public class CreateStoryActivity extends BaseActivity {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
+            case R.id.action_createStory:
+                createStory();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -102,6 +106,14 @@ public class CreateStoryActivity extends BaseActivity {
         final String tags = mTags.getText().toString();
         final String title = mTitle.getText().toString();
         final String description = mDescription.getText().toString();
+
+        String selectedPrivacy = mFriendOnly.getSelectedItem().toString();
+        final boolean friendsOnly;
+
+        if(selectedPrivacy.equals("Public"))
+            friendsOnly = false;
+        else
+            friendsOnly = true;
 
 
         // [START single_value_read]
@@ -122,7 +134,7 @@ public class CreateStoryActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // Write new post
-                            writeNewStory(userId, user.username, title, description, tags);
+                            writeNewStory(userId, user.username, title, description, tags, friendsOnly);
                         }
 
                         // Finish this Activity, back to the stream
@@ -139,7 +151,7 @@ public class CreateStoryActivity extends BaseActivity {
 
     }
 
-    private void writeNewStory(String userId, String username, String title, String description, String tags) {
+    private void writeNewStory(String userId, String username, String title, String description, String tags, boolean friendsOnly) {
         //Create Story at /user-stories/$userid/$storyid and /stories/$storyid
         String key = mDataBase.child("posts").push().getKey();
 
@@ -147,7 +159,7 @@ public class CreateStoryActivity extends BaseActivity {
         ArrayList<String> tagList = new ArrayList<>(Arrays.asList(tags.split("\\s*;\\s*")));
 
 
-        Story story = new Story(userId, username, title, description, tagList);
+        Story story = new Story(userId, username, title, description, tagList, friendsOnly);
         Map<String, Object> storyValues = story.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();

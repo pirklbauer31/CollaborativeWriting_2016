@@ -20,6 +20,7 @@ public class Story {
     public String author;
     public String title;
     public String body;
+    public boolean friendsOnly;
 
     public int starCount = 0;
     public Map<String, Boolean> stars = new HashMap<>();
@@ -29,12 +30,14 @@ public class Story {
         // Default constructor required for calls to DataSnapshot.getValue(Story.class)
     }
 
-    public Story(String userId, String auth, String t, String b, List<String> tagList) {
+    public Story(String userId, String auth, String t, String b, List<String> tagList, boolean fOnly) {
         uid = userId;
         author = auth;
         title = t;
         body = b;
         tags = (ArrayList<String>) tagList;
+        friendsOnly = fOnly;
+
     }
 
     // [START post_to_map]
@@ -47,6 +50,7 @@ public class Story {
         result.put("body", body);
         result.put("starCount", starCount);
         result.put("stars", stars);
+        result.put("friendsonly", friendsOnly);
 
         return result;
     }
