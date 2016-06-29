@@ -8,12 +8,15 @@
     <string name="error_registration_failed">Registrierung fehlgeschlagen!</string>
     <string name="error_field_required">Erforderliches Feld</string>
     <string name="action_sign_in_short">Einloggen</string>
-    <string name="action_sign_in"></string>
+    <string name="action_sign_in">Einloggen oder Registrieren</string>
     <string name="action_register">Registrieren</string>
     <string name="action_settings">Einstellungen</string>
     <string name="prompt_firstname">Vorname (optional)</string>
     <string name="prompt_lastname">Nachname (optional)</string>
     <string name="prompt_password">Passwort</string>
     <string name="prompt_username">Benutzername</string>
-    <string name="contribute_to_this_story"></string>
+    <string name="contribute_to_this_story">Zu dieser Story beitragen!</string>
+    <string name="descriptionHere">Beschreibung einfügen!</string>
+    <string name="error_username_required">Benutzername Erforderlich</string>
+    <string name="titleHere">Titel</string>
 </resources>

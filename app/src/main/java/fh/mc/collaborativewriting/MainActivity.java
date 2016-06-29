@@ -330,8 +330,9 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.nav_statistics) {
+            Intent i= new Intent(getApplicationContext(), StatisticActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_friends) {
             Intent i= new Intent(getApplicationContext(), FriendlistActivity.class);
             startActivity(i);
