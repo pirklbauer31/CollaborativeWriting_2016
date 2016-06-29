@@ -425,9 +425,9 @@ public class MainActivity extends BaseActivity
                         imageStream = getContentResolver().openInputStream(selectedImage);
                         yourSelectedImage = decodeUri(selectedImage);
                         saveImageLocal(yourSelectedImage, selectedImage);
-                        Log.d(TAG,Environment.getExternalStorageDirectory().getAbsolutePath().toString()+"/Project_CoW/"+selectedImage.getLastPathSegment());
-                        uploadFromUri(Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath().toString()+"/Project_CoW/"+selectedImage.getLastPathSegment()+".PNG"));
-                        //updateProfilePic(Uri.parse(Environment.getExternalStorageDirectory().toString()+selectedImage.getLastPathSegment()+"_CoW"));
+                        Log.d(TAG,Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath().toString() + "/Project_CoW/"+selectedImage.getLastPathSegment());
+                        uploadFromUri(Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath().toString() + "/Project_CoW/"+selectedImage.getLastPathSegment()+".PNG"));
+                        updateProfilePic(Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath().toString() + "/Project_CoW/"+selectedImage.getLastPathSegment()+".PNG"));
                         img.setImageBitmap(yourSelectedImage);
 
 
