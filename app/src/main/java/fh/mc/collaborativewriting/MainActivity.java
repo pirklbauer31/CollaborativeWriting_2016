@@ -1,6 +1,5 @@
 package fh.mc.collaborativewriting;
 
-import android.*;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -60,6 +59,7 @@ import java.io.OutputStream;
 import fh.mc.collaborativewriting.fragments.MyStoriesFragment;
 import fh.mc.collaborativewriting.fragments.RecentStoryFragment;
 import fh.mc.collaborativewriting.fragments.StarredStoriesFragment;
+import fh.mc.collaborativewriting.fragments.TopStoriesFragment;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -149,13 +149,15 @@ public class MainActivity extends BaseActivity
             private final Fragment[] mFragments = new Fragment[]{
                     new MyStoriesFragment(),
                     new RecentStoryFragment(),
+                    new TopStoriesFragment(),
                     new StarredStoriesFragment()
             };
 
             private final String[] mFragmentNames = new String[]{
                     "My Stories",
                     "New Stories",
-                    "Top Stories"
+                    "Top Stories",
+                    "Followed Stories"
             };
 
 
@@ -461,7 +463,7 @@ public class MainActivity extends BaseActivity
                 dir.mkdirs();
 
             // Create a name for the saved image
-            File file = (File) new File(dir, u.getLastPathSegment() + ".PNG");
+            File file = new File(dir, u.getLastPathSegment() + ".PNG");
 
             try {
                 if (!file.exists()) {

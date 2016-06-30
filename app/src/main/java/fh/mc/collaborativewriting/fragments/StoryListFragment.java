@@ -20,6 +20,8 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 
+import java.util.Map;
+
 import fh.mc.collaborativewriting.DetailActivity;
 import fh.mc.collaborativewriting.R;
 import fh.mc.collaborativewriting.models.Story;
@@ -37,6 +39,8 @@ public abstract class StoryListFragment extends Fragment {
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
 
+    private String storyKey;
+    private Story mStory;
     public StoryListFragment() {
     }
 
@@ -72,7 +76,7 @@ public abstract class StoryListFragment extends Fragment {
                 final DatabaseReference storyRef = getRef(position);
 
                 //Set click listener
-                final String storyKey = storyRef.getKey();
+                storyKey = storyRef.getKey();
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -88,6 +92,7 @@ public abstract class StoryListFragment extends Fragment {
                     viewHolder.starView.setImageResource(R.drawable.ic_star_border_black_36dp);
                 }
 
+                mStory = model;
                 //bind story to viewholder and set OnClickListener
                 viewHolder.bindToStory(model, new View.OnClickListener() {
                     @Override
@@ -95,10 +100,13 @@ public abstract class StoryListFragment extends Fragment {
                         //write to user-stories and stories
                         DatabaseReference storiesRef = mDatabase.child("stories").child(storyRef.getKey());
                         DatabaseReference userStoriesRef = mDatabase.child("user-stories").child(model.uid).child(storyRef.getKey());
-
+                        DatabaseReference userStarredReference = FirebaseDatabase.getInstance().getReference().
+                                child("user-starred-stories").child(getUid()).child(storyKey);
                         //run transactions
                         onStarClicked(storiesRef);
                         onStarClicked(userStoriesRef);
+                        onStarClicked(userStarredReference);
+
 
                     }
                 });
@@ -122,10 +130,22 @@ public abstract class StoryListFragment extends Fragment {
                     //unstar story
                     s.starCount--;
                     s.stars.remove(getUid());
+                    mDatabase.child("user-starred-stories").child(getUid()).child(storyKey).removeValue();
                 } else {
                     //star story
                     s.starCount++;
                     s.stars.put(getUid(), true);
+                    //add user to the stars in the story before saving it in the DB
+                    if (!mStory.stars.containsKey(getUid())) {
+                        mStory.starCount++;
+                        mStory.stars.put(getUid(), true);
+                    }
+                    //Create Story at /user-starred-stories/$userid/
+
+                    Map<String, Object> storyValues = mStory.toMap();
+
+                    mDatabase.child("user-starred-stories").child(getUid()).child(storyKey).updateChildren(storyValues);
+
                 }
 
                 //Set value

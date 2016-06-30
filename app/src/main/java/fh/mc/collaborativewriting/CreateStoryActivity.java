@@ -110,10 +110,7 @@ public class CreateStoryActivity extends BaseActivity {
         String selectedPrivacy = mFriendOnly.getSelectedItem().toString();
         final boolean friendsOnly;
 
-        if(selectedPrivacy.equals("Public"))
-            friendsOnly = false;
-        else
-            friendsOnly = true;
+        friendsOnly = !selectedPrivacy.equals("Public");
 
 
         // [START single_value_read]
@@ -153,7 +150,7 @@ public class CreateStoryActivity extends BaseActivity {
 
     private void writeNewStory(String userId, String username, String title, String description, String tags, boolean friendsOnly) {
         //Create Story at /user-stories/$userid/$storyid and /stories/$storyid
-        String key = mDataBase.child("posts").push().getKey();
+        String key = mDataBase.child("stories").push().getKey();
 
         //Split tags and store into a list
         ArrayList<String> tagList = new ArrayList<>(Arrays.asList(tags.split("\\s*;\\s*")));

@@ -40,6 +40,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import fh.mc.collaborativewriting.models.Contribution;
 import fh.mc.collaborativewriting.models.Story;
@@ -54,6 +55,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     //firebase references
     private static DatabaseReference mStoryReference;
     private static DatabaseReference mUserStoryReference;
+    private DatabaseReference mUserStarredReference;
 
     private static DatabaseReference mContributionReference;
     private ValueEventListener mStoryListener;
@@ -90,10 +92,11 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         mStoryReference = FirebaseDatabase.getInstance().getReference()
                 .child("stories").child(mStoryKey);
         mUserStoryReference = FirebaseDatabase.getInstance().getReference()
-                .child("user-stories").child(mStoryKey);
+                .child("user-stories").child(getUid()).child(mStoryKey);
         mContributionReference = FirebaseDatabase.getInstance().getReference()
                 .child("stories-comments").child(mStoryKey);
-
+        mUserStarredReference = FirebaseDatabase.getInstance().getReference().
+                child("user-starred-stories").child(getUid()).child(mStoryKey);
 
         //Init View
         mAuthorView = (TextView) findViewById(R.id.story_author);
@@ -113,6 +116,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             public void onClick(View v) {
                 onStarClicked(mUserStoryReference);
                 onStarClicked(mStoryReference);
+                onStarClicked(mUserStarredReference);
             }
         });
 
@@ -239,10 +243,22 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                     //unstar story
                     s.starCount--;
                     s.stars.remove(getUid());
+                    mUserStarredReference.removeValue();
                 } else {
                     //star story
                     s.starCount++;
                     s.stars.put(getUid(), true);
+
+                    //add user to the stars in the story before saving it in the DB
+                    if (!mStory.stars.containsKey(getUid())) {
+                        mStory.starCount++;
+                        mStory.stars.put(getUid(), true);
+                    }
+                    //Create Story at /user-starred-stories/$userid/
+
+                    Map<String, Object> storyValues = mStory.toMap();
+
+                    mUserStarredReference.updateChildren(storyValues);
                 }
 
                 //Set value
@@ -443,7 +459,10 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                         commentOptions.clear();
                         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
 
-                        commentOptions.add("Upvote");
+                        if (!contribution.upvotes.containsKey(getUid()))
+                            commentOptions.add("Upvote");
+                        else
+                            commentOptions.add("Remove Upvote");
                         if (contribution.uid.equals(getUid()) || mStory.uid.equals(getUid())) {
                             commentOptions.add("Delete");
                         }
