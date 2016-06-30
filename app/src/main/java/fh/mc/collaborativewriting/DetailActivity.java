@@ -1,11 +1,16 @@
 package fh.mc.collaborativewriting;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,17 +20,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +53,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     //firebase references
     private static DatabaseReference mStoryReference;
+    private static DatabaseReference mUserStoryReference;
+
     private static DatabaseReference mContributionReference;
     private ValueEventListener mStoryListener;
     private String mStoryKey;
@@ -55,7 +68,10 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     private TextView mAuthorView;
     private TextView mTitleView;
     private TextView mDescriptionView;
+    private TextView mStarNumView;
     private EditText mContributionField;
+    private ImageView mStarView;
+    private ImageView mStoryAuthorPicView;
     private RecyclerView mContributionsRecycler;
     private static Button mContributionButton;
     @Override
@@ -73,6 +89,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         // Initialize Database
         mStoryReference = FirebaseDatabase.getInstance().getReference()
                 .child("stories").child(mStoryKey);
+        mUserStoryReference = FirebaseDatabase.getInstance().getReference()
+                .child("user-stories").child(mStoryKey);
         mContributionReference = FirebaseDatabase.getInstance().getReference()
                 .child("stories-comments").child(mStoryKey);
 
@@ -81,13 +99,22 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         mAuthorView = (TextView) findViewById(R.id.story_author);
         mDescriptionView = (TextView) findViewById(R.id.story_description);
         mTitleView = (TextView) findViewById(R.id.story_title);
+        mStarNumView = (TextView) findViewById(R.id.story_detail_num_stars);
+        mStarView = (ImageView) findViewById(R.id.stars_detail);
+        mStoryAuthorPicView = (ImageView) findViewById(R.id.story_author_profile_pic);
         mContributionField = (EditText) findViewById(R.id.field_comment_text);
 
         mContributionButton = (Button) findViewById(R.id.button_contribute);
         mContributionsRecycler = (RecyclerView) findViewById(R.id.recycler_comments);
 
 
-        commentOptions.add("Upvote");
+        mStarView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onStarClicked(mUserStoryReference);
+                onStarClicked(mStoryReference);
+            }
+        });
 
         mContributionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +158,45 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                 mAuthorView.setText(mStory.author);
                 mTitleView.setText(mStory.title);
                 mDescriptionView.setText(mStory.body);
+
+                mStarNumView.setText(String.valueOf(mStory.starCount));
+                if (mStory.stars.containsKey(getUid())) {
+                    mStarView.setImageResource(R.drawable.ic_star_black_36dp);
+                } else {
+                    mStarView.setImageResource(R.drawable.ic_star_border_black_36dp);
+                }
+
+                DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("users");
+                Query searchForUserPic = myRef.child(mStory.uid).child("profilePic");
+                searchForUserPic.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        StorageReference profileReference = FirebaseStorage.getInstance().getReferenceFromUrl(String.valueOf(dataSnapshot.getValue()));
+
+
+
+                        final long ONE_MEGABYTE = 1024 * 1024;
+                        profileReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                            @Override
+                            public void onSuccess(byte[] bytes) {
+                                // Data for profilePic is returned
+                                Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                mStoryAuthorPicView.setImageBitmap(bm);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle any errors
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
                 // [END_EXCLUDE]
             }
 
@@ -158,6 +224,37 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
 
+    }
+
+    private void onStarClicked(DatabaseReference storiesRef) {
+        storiesRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Story s = mutableData.getValue(Story.class);
+                if (s == null) {
+                    return Transaction.success(mutableData);
+                }
+
+                if (s.stars.containsKey(getUid())) {
+                    //unstar story
+                    s.starCount--;
+                    s.stars.remove(getUid());
+                } else {
+                    //star story
+                    s.starCount++;
+                    s.stars.put(getUid(), true);
+                }
+
+                //Set value
+                mutableData.setValue(s);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                Log.d(TAG, "storyTransaction complete:" + databaseError);
+            }
+        });
     }
 
     private void postContribution() {
