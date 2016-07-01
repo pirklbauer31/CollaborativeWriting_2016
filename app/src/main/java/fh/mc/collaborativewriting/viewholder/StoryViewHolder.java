@@ -3,19 +3,21 @@ package fh.mc.collaborativewriting.viewholder;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -81,7 +83,8 @@ public class StoryViewHolder extends RecyclerView.ViewHolder {
                     public void onSuccess(byte[] bytes) {
                         // Data for "testprofile.png" is returned
                         Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        profileView.setImageBitmap(bm);
+                        profileView.setImageBitmap(getCroppedBitmap(bm, 150));
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -97,5 +100,34 @@ public class StoryViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
+    }
+
+
+    private static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {
+        Bitmap sbmp;
+        if (bmp.getWidth() != radius || bmp.getHeight() != radius)
+            sbmp = Bitmap.createScaledBitmap(bmp, radius, radius, false);
+        else
+            sbmp = bmp;
+        Bitmap output = Bitmap.createBitmap(sbmp.getWidth(),
+                sbmp.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xffa19774;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, sbmp.getWidth(), sbmp.getHeight());
+
+        paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
+        paint.setDither(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(Color.parseColor("#BAB399"));
+        canvas.drawCircle(sbmp.getWidth() / 2 + 0.7f, sbmp.getHeight() / 2 + 0.7f,
+                sbmp.getWidth() / 2 + 0.1f, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(sbmp, rect, rect, paint);
+
+
+        return output;
     }
 }

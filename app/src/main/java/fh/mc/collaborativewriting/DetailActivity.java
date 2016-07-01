@@ -186,7 +186,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                             public void onSuccess(byte[] bytes) {
                                 // Data for profilePic is returned
                                 Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                mStoryAuthorPicView.setImageBitmap(bm);
+
+                                mStoryAuthorPicView.setImageBitmap(getCroppedBitmap(bm, 200));
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override

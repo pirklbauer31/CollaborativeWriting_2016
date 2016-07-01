@@ -12,7 +12,6 @@ public class RecentStoryFragment extends StoryListFragment {
         //TODO: implement more Fragments
         //Query recentStories = databaseReference.child("stories").limitToFirst(30);
         Query recentStories = databaseReference.child("stories").orderByChild("friendsonly").equalTo(false);
-
         return recentStories;
     }
 }
