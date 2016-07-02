@@ -27,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.w3c.dom.Text;
+
 import fh.mc.collaborativewriting.R;
 import fh.mc.collaborativewriting.models.Story;
 
@@ -42,6 +44,8 @@ public class StoryViewHolder extends RecyclerView.ViewHolder {
     public ImageView starView;
     public ImageView profileView;
 
+    public TextView privacyView;
+
     public StoryViewHolder(View itemView) {
         super(itemView);
 
@@ -52,6 +56,8 @@ public class StoryViewHolder extends RecyclerView.ViewHolder {
         starView = (ImageView) itemView.findViewById(R.id.star);
         profileView = (ImageView) itemView.findViewById(R.id.story_author_profile_pic);
 
+        privacyView = (TextView) itemView.findViewById(R.id.story_privacy);
+
     }
 
     public void bindToStory(Story story, View.OnClickListener starClickListener) {
@@ -59,6 +65,11 @@ public class StoryViewHolder extends RecyclerView.ViewHolder {
         authorView.setText(story.author);
         numberOfStarsView.setText(String.valueOf(story.starCount));
         descriptionView.setText(story.body);
+
+        if(story.friendsOnly == true)
+            privacyView.setText("Friends only");
+        else
+            privacyView.setText("Public");
 
         starView.setOnClickListener(starClickListener);
 

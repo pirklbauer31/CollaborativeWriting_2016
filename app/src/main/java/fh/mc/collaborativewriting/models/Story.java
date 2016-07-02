@@ -30,6 +30,7 @@ public class Story {
         // Default constructor required for calls to DataSnapshot.getValue(Story.class)
     }
 
+
     public Story(String userId, String auth, String t, String b, List<String> tagList, boolean fOnly) {
         uid = userId;
         author = auth;
@@ -39,6 +40,8 @@ public class Story {
         friendsOnly = fOnly;
 
     }
+
+
 
     // [START post_to_map]
     @Exclude
