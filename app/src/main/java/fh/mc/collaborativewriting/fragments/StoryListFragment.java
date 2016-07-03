@@ -75,44 +75,42 @@ public abstract class StoryListFragment extends Fragment {
             protected void populateViewHolder(final StoryViewHolder viewHolder, final Story model, final int position) {
                 final DatabaseReference storyRef = getRef(position);
 
-                if (model.friendsOnly == false)
-                {
-                        //Set click listener
-                        storyKey = storyRef.getKey();
-                    viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent i = new Intent(getActivity(), DetailActivity.class);
-                            i.putExtra(DetailActivity.EXTRA_STORY_KEY, storyKey);
-                            startActivity(i);
-                        }
-                    });
-                    //has the story been "liked"
-                    if (model.stars.containsKey(getUid())) {
-                        viewHolder.starView.setImageResource(R.drawable.ic_star_black_36dp);
-                    } else {
-                        viewHolder.starView.setImageResource(R.drawable.ic_star_border_black_36dp);
+                //Set click listener
+                storyKey = storyRef.getKey();
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(getActivity(), DetailActivity.class);
+                        i.putExtra(DetailActivity.EXTRA_STORY_KEY, storyKey);
+                        startActivity(i);
                     }
-
-                    mStory = model;
-                    //bind story to viewholder and set OnClickListener
-                    viewHolder.bindToStory(model, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //write to user-stories and stories
-                            DatabaseReference storiesRef = mDatabase.child("stories").child(storyRef.getKey());
-                            DatabaseReference userStoriesRef = mDatabase.child("user-stories").child(model.uid).child(storyRef.getKey());
-                            DatabaseReference userStarredReference = FirebaseDatabase.getInstance().getReference().
-                                    child("user-starred-stories").child(getUid()).child(storyKey);
-                            //run transactions
-                            onStarClicked(storiesRef);
-                            onStarClicked(userStoriesRef);
-                            onStarClicked(userStarredReference);
-
-
-                        }
-                    });
+                });
+                //has the story been "liked"
+                if (model.stars.containsKey(getUid())) {
+                    viewHolder.starView.setImageResource(R.drawable.ic_star_black_36dp);
+                } else {
+                    viewHolder.starView.setImageResource(R.drawable.ic_star_border_black_36dp);
                 }
+
+                mStory = model;
+                //bind story to viewholder and set OnClickListener
+                viewHolder.bindToStory(model, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //write to user-stories and stories
+                        DatabaseReference storiesRef = mDatabase.child("stories").child(storyRef.getKey());
+                        DatabaseReference userStoriesRef = mDatabase.child("user-stories").child(model.uid).child(storyRef.getKey());
+                        DatabaseReference userStarredReference = FirebaseDatabase.getInstance().getReference().
+                                child("user-starred-stories").child(getUid()).child(storyKey);
+                        //run transactions
+                        onStarClicked(storiesRef);
+                        onStarClicked(userStoriesRef);
+                        onStarClicked(userStarredReference);
+
+
+                    }
+                });
+
             }
         };
         mRecycler.setAdapter(mAdapter);

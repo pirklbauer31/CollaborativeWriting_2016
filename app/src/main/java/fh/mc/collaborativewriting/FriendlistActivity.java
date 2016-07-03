@@ -78,6 +78,10 @@ public class FriendlistActivity extends AppCompatActivity {
         prepareFriendData();
     }
 
+    /**
+     * Stores the input (username of friend to add) and calls the method
+     * "getFriendId" with the userId of the current user and the username of the friend to add.
+     */
     private void AddFriend ()
     {
         final String friendname = mInputFriendAdd.getText().toString();
@@ -114,56 +118,22 @@ public class FriendlistActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * This method writes the friend entries to the given users in the database.
+     * <br>
+     * It will write the boolean value true to the friend entry of the current user and
+     * the value false to the user to add as friend.
+     * <br>
+     * This will allow the other user to accept the friend request.
+     * <br>
+     * After that it notifies the RecyclerView adapter of the changes to update the UI.
+     *
+     * @param userId The userId of the current user
+     * @param friendId The userId of the user to add as friend
+     */
     public void writeNewFriend(final String userId, String friendId)
     {
-        /*
-        Query friendRef = mDataBase.child("users").orderByChild("username").equalTo(friendUsername);
-        friendRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User friendUser = dataSnapshot.getValue(User.class);
 
-
-                if(friendUser == null)
-                {
-                    //user does not exist, cannot be added as friend
-                    Toast.makeText(FriendlistActivity.this,
-                            "Error: could not fetch user.",
-                            Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    String friendId = "";
-                    for(DataSnapshot friendSnapshot : dataSnapshot.getChildren()) {
-                        friendId = friendSnapshot.getKey();
-                        friendUser = friendSnapshot.getValue(User.class);
-                    }
-
-                    // todo Check if user is already added, maybe with array of added users which fills on activity start
-                    //check if friend is already added
-                    if (friendExists(userId, friendId) == true)
-                        Toast.makeText(FriendlistActivity.this, "user already as friend added!", Toast.LENGTH_LONG).show();
-                    else
-                    {
-                        System.out.println(friendUser.username + friendUser.email);
-                        //String friendId = dataSnapshot.getValue().toString();
-                        Toast.makeText(FriendlistActivity.this, friendId, Toast.LENGTH_LONG).show();
-
-                        mDataBase.child("users").child(userId).child("friends").child(friendId).setValue(true);
-                        mDataBase.child("users").child(friendId).child("friends").child(userId).setValue(false);
-                    }
-
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-            }
-        });
-
-        */
         mDataBase.child("users").child(userId).child("friends").child(friendId).setValue(true);
         mDataBase.child("users").child(friendId).child("friends").child(userId).setValue(false);
         mAdapter.notifyItemInserted(friendList.size());
@@ -172,6 +142,16 @@ public class FriendlistActivity extends AppCompatActivity {
         //Toast.makeText(FriendlistActivity.this, friendId, Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * This method checks if the user to add as friend has already been added to the friend-list.
+     * <br>
+     * If not, it will call the method "writeNewFriend" with the userIds of the current user
+     * and of the user to add as friend.
+     *
+     * @param userId The userId of the current user
+     * @param friendId The userId of the user to add as friend
+     * @param friendUsername The username of the user to add as friend
+     */
     public void friendExists (final String userId, final String friendId, final String friendUsername)
     {
        // Query friendExists = mDataBase.child("users").child(userId).child("friends").orderByChild(friendId);
@@ -202,6 +182,16 @@ public class FriendlistActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Fetches the userId of the user to add as friend with the given username.
+     * <br>
+     * Also checks if the user to add exists or is the user itself.
+     * It then calls the method "friendExists" with the userIds of the current user and
+     * the friend to add, as well as the username as parameters.
+     *
+     * @param userId The userId of the current user
+     * @param friendUsername The username of the user to add as friend
+     */
     public void getFriendId (final String userId, final String friendUsername)
     {
         Query friendRef = mDataBase.child("users").orderByChild("username").equalTo(friendUsername);
@@ -240,6 +230,15 @@ public class FriendlistActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Fetches all friend entries for the user from the Firebase real-time database.
+     * It also sets a ValueEventListener which fetches new friend entries
+     * when the data structure has changed.
+     * <br>
+     * The method stores the Key and value of all friend entries and calls the
+     * method "addFriendToList" with both values as parameters.
+     *
+     */
     public void prepareFriendData()
     {
         String userId = getUid();
@@ -271,6 +270,15 @@ public class FriendlistActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * Fetches the user with the given userId from the Firebase real-time database,
+     * stores its values in a "Friend" object and adds it to the ArrayList
+     * which contains the friends to fill the RecyclerView with.
+     *
+     * @param friendId The userId of the friend to add
+     * @param friendAccepted Boolean value which describes if the friend-request has been answered
+     */
     public void addFriendToList (final String friendId, final boolean friendAccepted)
     {
         Query singleFriendRef = mDataBase.child("users").child(friendId);
@@ -295,6 +303,13 @@ public class FriendlistActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This internal class describes the RecyclerView Adapter for the friend-list.
+     * It basically binds the values to the view-objects (TextViews, ImageViews, etc)
+     * and sets onClickListeners for the Accept and Remove buttons.
+     *
+     * @author Kevin
+     */
     public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.MyViewHolder> {
         private List<Friend> friendList;
 
@@ -326,7 +341,7 @@ public class FriendlistActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, final int position) {
+        public void onBindViewHolder(final MyViewHolder holder, int position) {
             Friend friend = friendList.get(position);
             holder.usernameView.setText(friend.username);
             // todo set profile picture
@@ -335,11 +350,10 @@ public class FriendlistActivity extends AppCompatActivity {
             }
             else {
                 holder.acceptFriendView.setVisibility(View.VISIBLE);
-                //todo add OnClickListeners to Buttons
                 holder.acceptFriendView.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        acceptFriendRequest(position);
+                        acceptFriendRequest(holder.getAdapterPosition());
                     }
                 });
             }
@@ -348,9 +362,11 @@ public class FriendlistActivity extends AppCompatActivity {
             holder.removeFriendView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    removeFriend(position);
+                    removeFriend(holder.getAdapterPosition());
                 }
             });
+
+
         }
 
         @Override
@@ -360,6 +376,14 @@ public class FriendlistActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Updates the boolean value for friendAccepted in the database.
+     * <br>
+     * It sets the values on both users to true and updates the UI.
+     * A boolean value true in that case means, that the friend-request has been accepted.
+     *
+     * @param positionOfFriend The position of the friend in the RecyclerView
+     */
     public void acceptFriendRequest (int positionOfFriend)
     {
         Friend friendToAccept = friendList.get(positionOfFriend);
@@ -373,6 +397,12 @@ public class FriendlistActivity extends AppCompatActivity {
         mAdapter.notifyItemChanged(positionOfFriend);
     }
 
+
+    /**
+     * Removes the friend entries from both users from the database and updates
+     * the UI.
+     * @param positionOfFriend The position of the friend in the RecyclerView
+     */
     public void removeFriend (int positionOfFriend)
     {
         Friend friendToRemove = friendList.get(positionOfFriend);
