@@ -16,16 +16,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+/**
+ * Activity Shows simple User-Statistics
+ * @Author Felix Mauler
+ */
 public class StatisticActivity extends AppCompatActivity {
 
     private static final String TAG = "StatisticsActivity";
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseAuth mAuth;
+    /**
+     * Firebase Parameters to connect to Database and get User
+     */
     private DatabaseReference mDatabase;
-
     private FirebaseUser mUser;
 
+    /**
+     *
+     */
     private TextView mActiveUsers;
     private TextView mStories;
     private TextView mTextBlocks;
@@ -38,21 +45,6 @@ public class StatisticActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistic);
 
-        mAuth = FirebaseAuth.getInstance();
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                    Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);
-                    startActivity(i);
-                }
-            }
-        };
-
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -64,6 +56,9 @@ public class StatisticActivity extends AppCompatActivity {
         mUpVotes = (TextView) findViewById(R.id.upvotes);
         mStars = (TextView) findViewById(R.id.stars);
 
+        /**
+         * Count the number of registered Users
+         */
         mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -79,12 +74,14 @@ public class StatisticActivity extends AppCompatActivity {
 
             }
         });
-
+        /**
+         * Count the number of created Stories
+         */
         mDatabase.child("stories").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int storyCount=0;
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot storySnapshot : dataSnapshot.getChildren()){
                     storyCount++;
                 }
                 mStories.setText(""+storyCount);
@@ -95,7 +92,11 @@ public class StatisticActivity extends AppCompatActivity {
 
             }
         });
-       mDatabase.child("user-stories").child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+        /**
+         * Count the number of Stories the logged-in User has created
+         */
+        mDatabase.child("user-stories").child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int myStoriesCount=0;
@@ -111,25 +112,29 @@ public class StatisticActivity extends AppCompatActivity {
             }
         });
 
+
+        /**
+         * Count the number of Comments in general and per logged-in user + the upvotes of that user
+         */
         Query myComments = FirebaseDatabase.getInstance().getReference("stories-comments");
         myComments.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                int myTextBlocksCount=0;
-                int textBlockCount=0;
+                int myCommentCount=0;
+                int commentCount=0;
                 long myUpvoteCount=0;
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()){
-                    for (DataSnapshot myCommentSnapshot : userSnapshot.getChildren()) {
-                        textBlockCount++;
+                for (DataSnapshot storiesSnapshot : dataSnapshot.getChildren()){
+                    for (DataSnapshot myCommentSnapshot : storiesSnapshot.getChildren()) {
+                        commentCount++;
                         if (myCommentSnapshot.child("uid").getValue().equals(mUser.getUid())) {
-                            myTextBlocksCount++;
+                            myCommentCount++;
                             myUpvoteCount += (long) myCommentSnapshot.child("upvoteCount").getValue();
                             Log.d(TAG, myCommentSnapshot.child("uid").toString());
                         }
                     }
                 }
-                mTextBlocks.setText(""+textBlockCount);
-                mmyTextBlocks.setText(""+myTextBlocksCount);
+                mTextBlocks.setText(""+commentCount);
+                mmyTextBlocks.setText(""+myCommentCount);
                 mUpVotes.setText(""+myUpvoteCount);
             }
 
@@ -138,7 +143,9 @@ public class StatisticActivity extends AppCompatActivity {
 
             }
         });
-
+        /**
+         * Count the number of stars the logged-in user has
+         */
         Query myStars = FirebaseDatabase.getInstance().getReference("user-stories");
         myStars.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

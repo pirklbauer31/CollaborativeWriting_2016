@@ -208,7 +208,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         super.onActivityResult(requestCode, resultCode, data);
         mCallBackManager.onActivityResult(requestCode, resultCode, data);
     }
-
+    /*
     private void handleFacebookAccessToken(AccessToken accessToken) {
         Log.d(TAG, "handleFacebookAccessToken: " + accessToken);
 
@@ -232,9 +232,12 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                         showProgress(false);
                     }
                 });
-    }
+    }*/
 
-
+    /**
+     * Validates if email and passwort are not empty and password-length > 4 characters
+     * @return true if correct, false if not.
+     */
     private boolean validateEmailPassword () {
         View focusView = null;
         boolean valid=true;
@@ -248,17 +251,10 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             valid = false;
             focusView=mEmailView;
         }
-        else /*if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            mEmailView.setError(getString( R.string.error_invalid_email));
-            valid = false;
-            focusView=mEmailView;
-        } else {
-            mEmailView.setError(null);
-        }*/
 
-        if (password.isEmpty() || password.length() < 4 ) {
-            mPasswordView.setError(getString( R.string.error_invalid_password));
-            valid= false;
+        else if (password.isEmpty() || password.length() < 4 ) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            valid = false;
         }
 
         else {
@@ -267,11 +263,13 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         return valid;
     }
 
+    /**
+     * Signs in User into Firebase if email and password are correct
+     * @param givenMail The mail-address of the user to sign in
+     */
     private void signInUserWithEmail(String givenMail) {
 
         final String email= givenMail;
-        String password= mPasswordView.getText().toString();
-
 
         if (validateEmailPassword()) {
 
@@ -289,20 +287,14 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                                     Toast.makeText(LoginActivity.this, "Email doesnt exist",
                                             Toast.LENGTH_SHORT).show();
                                 }
-                                //TODO: Delete after testing!
-                                else {
-                                    Toast.makeText(LoginActivity.this, "Signing in was successful!",
-                                            Toast.LENGTH_SHORT).show();
-
-                                }
-
-                                // ...
                             }
                         });
             }
         }
 
-    String mail="";
+    /**
+     * Function gets email-address from username and logs user in if the name is correct
+     */
     private void getEmailFromUser(){
         DatabaseReference myRef = mDatabase.getReference("users");
         Query userSearch = myRef.orderByChild("email");
@@ -316,25 +308,25 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 for (DataSnapshot userSnapshot: dataSnapshot.getChildren()
                      ) {
 
-                    if (userSnapshot.child("username").getValue().toString().contentEquals(mEmailView.getText().toString())){
+                    if (userSnapshot.child("username").getValue().toString().contentEquals(mEmailView.getText().toString())) {
 
-                        signInUserWithEmail(userSnapshot.child("email").getValue().toString());                    }
+                        signInUserWithEmail(userSnapshot.child("email").getValue().toString());
+                    }
                 }
-
-
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+
             }
         });
     }
-    public void mailReturner(String s){
-        mail=s;
-        mEmailView.setText(mail);
-    }
 
+    /**
+     * Function creates new user in the database if given data is correct
+     * calls writeNewUser()
+     */
     private void createUserwithEmail() {
 
         final String email= mEmailView.getText().toString();
@@ -366,6 +358,10 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
     }
 
+    /**
+     * Checks if user already exists in database (email and username are checked)
+     * if it doesn't exist createUserWithEmail() is called
+     */
     private void checkIfUserExists() {
         String email=mEmailView.getText().toString();
         String username= mUsernameView.getText().toString();
@@ -421,6 +417,9 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
     }
 
+    /**
+     *Creates new User in the Firebase Database
+     */
     private void writeNewUser() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 

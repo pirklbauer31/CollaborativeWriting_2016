@@ -12,6 +12,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+/**
+ * View represents only 2 Buttons to choose wether you want to sign in or register a new User
+ * If you were already logged in last time using the app it will redirect you to the MainActivity
+ * @Author Felix Mauler
+ */
 public class LoginChooserActivity extends BaseActivity {
 
 
@@ -25,12 +30,10 @@ public class LoginChooserActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login_chooser);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
         mAuth= FirebaseAuth.getInstance();
         mDatabase= FirebaseDatabase.getInstance();
-        //Firebase Loged on
+
+        //Firebase logged on
         mAuthListener= new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -88,7 +91,4 @@ public class LoginChooserActivity extends BaseActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-
-
-
 }
