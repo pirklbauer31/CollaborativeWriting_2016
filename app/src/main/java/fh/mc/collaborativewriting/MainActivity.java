@@ -177,6 +177,7 @@ public class MainActivity extends BaseActivity
             }
         };
 
+
         //Set up ViewPager
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mPagerAdapter);
@@ -203,7 +204,7 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private void updateMenuProfileView() {
+    private void updateMenuProfileView(boolean updateActivity) {
         mEmailView = (TextView) findViewById(R.id.emailView);
         mUsernameView = (TextView) findViewById(R.id.usernameView);
         if (mUser != null) {
@@ -226,7 +227,7 @@ public class MainActivity extends BaseActivity
                         // Data for "testprofile.png" is returned
                         Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         img = (ImageView) findViewById(R.id.profilePic);
-                        bm = getCroppedBitmap(bm, 150);
+                        bm = getCroppedBitmap(bm, 175);
                         img.setImageBitmap(bm);
                         img.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -275,12 +276,14 @@ public class MainActivity extends BaseActivity
                 mEmailView.setText(mUser.getEmail());
             }
         }
+        if (updateActivity)
+            this.recreate();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        updateMenuProfileView();
+        updateMenuProfileView(false);
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
@@ -528,12 +531,14 @@ public class MainActivity extends BaseActivity
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "User profile updated.");
+                            updateMenuProfileView(true);
+
+
                         }
                     }
                 });
         mDatabase.child("users").child(getUid()).child("profilePic").setValue("gs://project-cow.appspot.com/"+selectedImage.getLastPathSegment());
 
-        updateMenuProfileView();
 
     }
     private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException {
