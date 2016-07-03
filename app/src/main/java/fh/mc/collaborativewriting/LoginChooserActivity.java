@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 /**
- * View represents only 2 Buttons to choose wether you want to sign in or register a new User
+ * View represents only 2 Buttons to choose whether you want to sign in or register a new User
  * If you were already logged in last time using the app it will redirect you to the MainActivity
  * @Author Felix Mauler
  */

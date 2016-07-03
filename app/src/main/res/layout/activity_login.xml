@@ -149,14 +149,6 @@
                 android:id="@+id/email_signin_button"
                 android:layout_gravity="center_horizontal" />
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Search"
-                android:id="@+id/email_search_button"
-                android:layout_gravity="center_horizontal" />
-
-
 
             <!--TODO: bringt die App derzeit zum Crashen, deswegen derweil entfernt....
             <com.facebook.login.widget.LoginButton

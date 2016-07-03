@@ -12,6 +12,7 @@ import android.widget.Toast;
  * Created by Mark on 21.06.2016.
  */
 public class NetworkStateReceiver extends BroadcastReceiver {
+
     public void onReceive(Context context, Intent intent) {
         Log.d("app", "Network connectivity change");
         if (intent.getExtras() != null) {
@@ -21,7 +22,7 @@ public class NetworkStateReceiver extends BroadcastReceiver {
             }
         }
         if (intent.getExtras().getBoolean(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
-            //check if device is connected to the internet
+            //display message when user loses connection to the internet
             Toast toast = Toast.makeText(context, "No internet connection!", Toast.LENGTH_LONG);
             toast.show();
         }

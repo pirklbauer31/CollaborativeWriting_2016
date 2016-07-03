@@ -27,8 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.w3c.dom.Text;
-
 import fh.mc.collaborativewriting.R;
 import fh.mc.collaborativewriting.models.Story;
 
@@ -57,13 +55,14 @@ public class StoryViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void bindToStory(Story story, View.OnClickListener starClickListener) {
+    /**
+     * Updates the UI of the ViewHolder with a story from a StoryListFragment
+     */
+    public void bindToStory(Story story) {
         titleView.setText(story.title);
         authorView.setText(story.author);
         numberOfStarsView.setText(String.valueOf(story.starCount));
-        descriptionView.setText(story.body);
-
-        starView.setOnClickListener(starClickListener);
+        descriptionView.setText(story.description);
 
 
 
@@ -84,7 +83,7 @@ public class StoryViewHolder extends RecyclerView.ViewHolder {
                     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                     @Override
                     public void onSuccess(byte[] bytes) {
-                        // Data for "testprofile.png" is returned
+                        // Data for profilePicture is returned
                         Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         profileView.setImageBitmap(getCroppedBitmap(bm, 150));
 
@@ -106,6 +105,13 @@ public class StoryViewHolder extends RecyclerView.ViewHolder {
     }
 
 
+    /**
+     * Changes a given bitmap to a cropped, round bitmap
+     *
+     * @param bmp    the original bitmap
+     * @param radius radius of the new round bitmap
+     * @return
+     */
     private static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {
         Bitmap sbmp;
         if (bmp.getWidth() != radius || bmp.getHeight() != radius)
