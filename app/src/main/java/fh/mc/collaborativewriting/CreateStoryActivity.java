@@ -110,7 +110,11 @@ public class CreateStoryActivity extends BaseActivity {
         String selectedPrivacy = mFriendOnly.getSelectedItem().toString();
         final boolean friendsOnly;
 
-        friendsOnly = !selectedPrivacy.equals("Public");
+        //friendsOnly = !selectedPrivacy.equals("Public");
+        if(selectedPrivacy.equals("Public"))
+            friendsOnly = false;
+        else
+            friendsOnly = true;
 
 
         // [START single_value_read]
