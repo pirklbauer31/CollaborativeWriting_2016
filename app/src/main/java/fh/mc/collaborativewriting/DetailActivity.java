@@ -441,7 +441,6 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             else
                 mContributionButton.setEnabled(false);
             //is it a really good comment?
-            //TODO:
             if (contribution.upvoteCount > 2) {
                 holder.contributionText.setTextColor(Color.parseColor("#FFD600"));
                 holder.contributionText.setTypeface(null, Typeface.BOLD);
@@ -450,7 +449,6 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             else
                 holder.contributionText.setTextColor(contribution.color);
             //check if the current user is the author of this story to enable moderation
-            //TODO: add Moderators? (eher schon ein Wunschziel.. ^^)
             //if (mStory.uid.equals(getUid()) || contribution.uid.equals(getUid())) {
                 holder.contributionText.setOnLongClickListener(new View.OnLongClickListener() {
 

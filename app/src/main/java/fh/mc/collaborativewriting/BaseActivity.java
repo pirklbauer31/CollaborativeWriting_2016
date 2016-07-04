@@ -18,6 +18,11 @@ import com.google.firebase.auth.FirebaseAuth;
  * Created by mar k on 11.06.2016.
  */
 public class BaseActivity extends AppCompatActivity {
+
+    /**
+     * Get the unique ID from the currently signed in user
+     * @return returns UID from current user
+     */
     public static String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }

@@ -103,6 +103,10 @@ public abstract class StoryListFragment extends Fragment {
         }
     }
 
+    /**
+     * Get the unique ID from the currently signed in user
+     * @return returns UID from current user
+     */
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
