@@ -432,88 +432,10 @@ public class MainActivity extends BaseActivity
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     grantUriPermission(this.toString(), selectedImage, 0);
-                    InputStream imageStream = null;
-                    Bitmap yourSelectedImage;
-                    try {
-                        imageStream = getContentResolver().openInputStream(selectedImage);
-                        yourSelectedImage = decodeUri(selectedImage);
-                        saveImageLocal(yourSelectedImage, selectedImage);
-                        Log.d(TAG,Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath().toString() + "/Project_CoW/"+selectedImage.getLastPathSegment());
-                        //uploadFromUri(Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath().toString() + "/Project_CoW/"+selectedImage.getLastPathSegment()+".PNG"));
-                        //updateProfilePic(Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath().toString() + "/Project_CoW/"+selectedImage.getLastPathSegment()+".PNG"));
-                        uploadFromUri(selectedImage);
-                        updateProfilePic(selectedImage);
-                        img.setImageBitmap(yourSelectedImage);
-
-
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    uploadFromUri(selectedImage);
+                    updateProfilePic(selectedImage);
                 }
         }
-    }
-
-    public static boolean canWriteOnExternalStorage() {
-        // get the state of your external storage
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            // if storage is mounted return true
-            Log.d(TAG, "Yes, can write to external storage.");
-            return true;
-        }
-        return false;
-    }
-
-    private void saveImageLocal (Bitmap bmp, Uri u){
-        if (canWriteOnExternalStorage()) {
-            OutputStream output = null;
-            //Find the SD Card path
-            // File filePath = Environment.getExternalStorageDirectory();
-            // Create a new folder in SD Card
-            File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath().toString() + "/Project_CoW/");
-            if (!dir.exists())
-                dir.mkdirs();
-
-            // Create a name for the saved image
-            File file = new File(dir, u.getLastPathSegment() + ".PNG");
-
-            try {
-                if (!file.exists()) {
-                    file.createNewFile();
-                }
-                output = new FileOutputStream(file);
-
-                // Compress into png format image from 0% - 100%
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, output);
-                output.flush();
-                output.close();
-                // Show a toast message on successful save
-                Toast.makeText(MainActivity.this, "Image Saved to SD Card",
-                        Toast.LENGTH_SHORT).show();
-
-
-            } catch (FileNotFoundException e) {
-
-                e.printStackTrace();
-
-            } catch (IOException e) {
-            }
-        /*File sd = Environment.getExternalStorageDirectory();
-        File dest = new File(sd, u.getLastPathSegment()+"_CoW");
-
-        try {
-            FileOutputStream out = new FileOutputStream(dest);
-            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
-            out.flush();
-            out.close();
-            Log.d(TAG, "Profile Pic Saved Locally");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.d(TAG, "Save Pic Locally failed");
-        }*/
-        } else
-            Toast.makeText(MainActivity.this, "Image Saving failed",
-                    Toast.LENGTH_SHORT).show();
     }
 
     private void updateProfilePic(Uri selectedImage){
@@ -532,44 +454,12 @@ public class MainActivity extends BaseActivity
                         if (task.isSuccessful()) {
                             Log.d(TAG, "User profile updated.");
                             updateMenuProfileView(true);
-
-
                         }
                     }
                 });
         mDatabase.child("users").child(getUid()).child("profilePic").setValue("gs://project-cow.appspot.com/"+selectedImage.getLastPathSegment());
-
-
     }
-    private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException {
 
-        // Decode image size
-        BitmapFactory.Options o = new BitmapFactory.Options();
-        o.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o);
-
-        // The new size we want to scale to
-        final int REQUIRED_SIZE = 90;
-
-        // Find the correct scale value. It should be the power of 2.
-        int width_tmp = o.outWidth, height_tmp = o.outHeight;
-        int scale = 1;
-        while (true) {
-            if (width_tmp / 2 < REQUIRED_SIZE
-                    || height_tmp / 2 < REQUIRED_SIZE) {
-                break;
-            }
-            width_tmp /= 2;
-            height_tmp /= 2;
-            scale *= 2;
-        }
-
-        // Decode with inSampleSize
-        BitmapFactory.Options o2 = new BitmapFactory.Options();
-        o2.inSampleSize = scale;
-        return BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o2);
-
-    }
     // [START upload_from_uri]
     private void uploadFromUri(Uri fileUri) {
         Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());

@@ -57,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="My Textblocks:"
+        android:text="My Contributions:"
         android:id="@+id/textView6"
         android:layout_below="@+id/textView5"
         android:layout_alignParentLeft="true"
@@ -67,19 +67,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="right"
         android:text=""
         android:id="@+id/activeUsers"
         android:layout_alignTop="@+id/textView"
+        android:layout_toRightOf="@+id/textView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="right"
         android:text=""
         android:id="@+id/stories"
         android:layout_alignTop="@+id/textView2"
+        android:layout_toRightOf="@+id/textView2"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -87,31 +92,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text=""
+        android:gravity="right"
         android:id="@+id/textBlocks"
         android:layout_alignTop="@+id/textView3"
-        android:layout_alignLeft="@+id/stories"
-        android:layout_alignStart="@+id/stories" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/textView3"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="right"
         android:text=""
         android:id="@+id/myStories"
         android:layout_alignTop="@+id/textView5"
-        android:layout_alignLeft="@+id/activeUsers"
-        android:layout_alignStart="@+id/activeUsers" />
+        android:layout_toRightOf="@+id/textView5"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="right"
         android:text=""
         android:id="@+id/myTextBlocks"
         android:layout_alignTop="@+id/textView6"
-        android:layout_alignLeft="@+id/myStories"
-        android:layout_alignStart="@+id/myStories" />
+        android:layout_toRightOf="@+id/textView6"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -127,17 +139,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="right"
         android:text=""
         android:id="@+id/upvotes"
         android:layout_alignTop="@+id/textView4"
-        android:layout_alignLeft="@+id/stars"
-        android:layout_alignStart="@+id/stars" />
+        android:layout_toRightOf="@+id/textView4"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="My Stars:"
+        android:text="My Followers:"
         android:id="@+id/textView7"
         android:layout_below="@+id/textView4"
         android:layout_alignParentLeft="true"
@@ -147,9 +162,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="right"
         android:text=""
         android:id="@+id/stars"
         android:layout_alignTop="@+id/textView7"
+        android:layout_toRightOf="@+id/textView7"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 </RelativeLayout>
