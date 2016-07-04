@@ -5,22 +5,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.Transaction;
-
-import java.util.Map;
 
 import fh.mc.collaborativewriting.DetailActivity;
 import fh.mc.collaborativewriting.R;
@@ -75,44 +68,25 @@ public abstract class StoryListFragment extends Fragment {
             protected void populateViewHolder(final StoryViewHolder viewHolder, final Story model, final int position) {
                 final DatabaseReference storyRef = getRef(position);
 
-                if (model.friendsOnly == false)
-                {
-                        //Set click listener
-                        storyKey = storyRef.getKey();
-                    viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent i = new Intent(getActivity(), DetailActivity.class);
-                            i.putExtra(DetailActivity.EXTRA_STORY_KEY, storyKey);
-                            startActivity(i);
-                        }
-                    });
-                    //has the story been "liked"
-                    if (model.stars.containsKey(getUid())) {
-                        viewHolder.starView.setImageResource(R.drawable.ic_star_black_36dp);
-                    } else {
-                        viewHolder.starView.setImageResource(R.drawable.ic_star_border_black_36dp);
+                //Set click listener
+                final String storyKey = storyRef.getKey();
+                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(getActivity(), DetailActivity.class);
+                        i.putExtra(DetailActivity.EXTRA_STORY_KEY, storyKey);
+                        startActivity(i);
                     }
-
-                    mStory = model;
-                    //bind story to viewholder and set OnClickListener
-                    viewHolder.bindToStory(model, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //write to user-stories and stories
-                            DatabaseReference storiesRef = mDatabase.child("stories").child(storyRef.getKey());
-                            DatabaseReference userStoriesRef = mDatabase.child("user-stories").child(model.uid).child(storyRef.getKey());
-                            DatabaseReference userStarredReference = FirebaseDatabase.getInstance().getReference().
-                                    child("user-starred-stories").child(getUid()).child(storyKey);
-                            //run transactions
-                            onStarClicked(storiesRef);
-                            onStarClicked(userStoriesRef);
-                            onStarClicked(userStarredReference);
-
-
-                        }
-                    });
+                });
+                //has the story been "liked"
+                if (model.stars.containsKey(getUid())) {
+                    viewHolder.starView.setImageResource(R.drawable.ic_star_black_36dp);
+                } else {
+                    viewHolder.starView.setImageResource(R.drawable.ic_star_border_black_36dp);
                 }
+
+                //bind story to viewholder and set OnClickListener
+                viewHolder.bindToStory(model);
             }
         };
         mRecycler.setAdapter(mAdapter);
@@ -120,48 +94,6 @@ public abstract class StoryListFragment extends Fragment {
 
     }
 
-    private void onStarClicked(DatabaseReference storiesRef) {
-        storiesRef.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                Story s = mutableData.getValue(Story.class);
-                if (s == null) {
-                    return Transaction.success(mutableData);
-                }
-
-                if (s.stars.containsKey(getUid())) {
-                    //unstar story
-                    s.starCount--;
-                    s.stars.remove(getUid());
-                    mDatabase.child("user-starred-stories").child(getUid()).child(storyKey).removeValue();
-                } else {
-                    //star story
-                    s.starCount++;
-                    s.stars.put(getUid(), true);
-                    //add user to the stars in the story before saving it in the DB
-                    if (!mStory.stars.containsKey(getUid())) {
-                        mStory.starCount++;
-                        mStory.stars.put(getUid(), true);
-                    }
-                    //Create Story at /user-starred-stories/$userid/
-
-                    Map<String, Object> storyValues = mStory.toMap();
-
-                    mDatabase.child("user-starred-stories").child(getUid()).child(storyKey).updateChildren(storyValues);
-
-                }
-
-                //Set value
-                mutableData.setValue(s);
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-                Log.d(TAG, "storyTransaction complete:" + databaseError);
-            }
-        });
-    }
 
     @Override
     public void onDestroy() {

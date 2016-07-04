@@ -22,6 +22,13 @@ public class BaseActivity extends AppCompatActivity {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
+    /**
+     * Changes a given bitmap to a cropped, round bitmap
+     *
+     * @param bmp    the original bitmap
+     * @param radius radius of the new round bitmap
+     * @return
+     */
     public static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {
         Bitmap sbmp;
         if (bmp.getWidth() != radius || bmp.getHeight() != radius)
@@ -50,6 +57,10 @@ public class BaseActivity extends AppCompatActivity {
         return output;
     }
 
+    /**
+     * Check if the user is connected to the internet
+     * @return returns true if user is online
+     */
     public boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

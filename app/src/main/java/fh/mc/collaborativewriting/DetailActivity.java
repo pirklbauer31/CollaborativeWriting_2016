@@ -50,20 +50,19 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
 
     private static final String TAG = "StoryDetailActivity";
 
+    //stores the UID of the story passed by the MainActivity
     public static final String EXTRA_STORY_KEY = "story_key";
 
     //firebase references
     private static DatabaseReference mStoryReference;
     private static DatabaseReference mUserStoryReference;
     private DatabaseReference mUserStarredReference;
-
     private static DatabaseReference mContributionReference;
     private ValueEventListener mStoryListener;
     private String mStoryKey;
     private ContributionAdapter mAdapter;
     private static Story mStory;
 
-    //TODO: more options needed?
     private static ArrayList<String> commentOptions=new ArrayList<>();
 
     //UI
@@ -161,7 +160,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                 // [START_EXCLUDE]
                 mAuthorView.setText(mStory.author);
                 mTitleView.setText(mStory.title);
-                mDescriptionView.setText(mStory.body);
+                mDescriptionView.setText(mStory.description);
 
                 mStarNumView.setText(String.valueOf(mStory.starCount));
                 if (mStory.stars.containsKey(getUid())) {

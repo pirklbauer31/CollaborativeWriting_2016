@@ -15,11 +15,10 @@ import java.util.Map;
 @IgnoreExtraProperties
 public class Story {
 
-    //TODO: include other important properties (tags, moderators, etc..)
     public String uid;
     public String author;
     public String title;
-    public String body;
+    public String description;
     public boolean friendsOnly;
 
     public int starCount = 0;
@@ -31,11 +30,19 @@ public class Story {
     }
 
 
+    /**
+     * @param userId  the unique ID of the author of this story
+     * @param auth    Username of the author
+     * @param t       title of this story
+     * @param b       short description of the content
+     * @param tagList some metatags
+     * @param fOnly   is story public or friends-only?
+     */
     public Story(String userId, String auth, String t, String b, List<String> tagList, boolean fOnly) {
         uid = userId;
         author = auth;
         title = t;
-        body = b;
+        description = b;
         tags = (ArrayList<String>) tagList;
         friendsOnly = fOnly;
 
@@ -50,7 +57,7 @@ public class Story {
         result.put("uid", uid);
         result.put("author", author);
         result.put("title", title);
-        result.put("body", body);
+        result.put("description", description);
         result.put("starCount", starCount);
         result.put("stars", stars);
         result.put("friendsonly", friendsOnly);

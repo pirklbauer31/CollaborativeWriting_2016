@@ -7,13 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -184,6 +177,7 @@ public class MainActivity extends BaseActivity
             }
         };
 
+
         //Set up ViewPager
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mPagerAdapter);
@@ -210,11 +204,7 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-
+    private void updateMenuProfileView(boolean updateActivity) {
         mEmailView = (TextView) findViewById(R.id.emailView);
         mUsernameView = (TextView) findViewById(R.id.usernameView);
         if (mUser != null) {
@@ -237,7 +227,7 @@ public class MainActivity extends BaseActivity
                         // Data for "testprofile.png" is returned
                         Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         img = (ImageView) findViewById(R.id.profilePic);
-                        bm = getCircleBitmap(bm);
+                        bm = getCroppedBitmap(bm, 175);
                         img.setImageBitmap(bm);
                         img.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -286,31 +276,21 @@ public class MainActivity extends BaseActivity
                 mEmailView.setText(mUser.getEmail());
             }
         }
+        if (updateActivity)
+            this.recreate();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        updateMenuProfileView(false);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+
+
 
 
         return true;
-    }
-
-    private Bitmap getCircleBitmap(Bitmap bitmap) {
-        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(output);
-        final int color = Color.RED;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawOval(rectF, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        bitmap.recycle();
-
-        return output;
     }
 
     @Override
@@ -551,10 +531,14 @@ public class MainActivity extends BaseActivity
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "User profile updated.");
+                            updateMenuProfileView(true);
+
+
                         }
                     }
                 });
         mDatabase.child("users").child(getUid()).child("profilePic").setValue("gs://project-cow.appspot.com/"+selectedImage.getLastPathSegment());
+
 
     }
     private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException {
