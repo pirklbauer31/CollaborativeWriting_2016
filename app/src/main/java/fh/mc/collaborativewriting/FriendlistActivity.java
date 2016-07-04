@@ -1,5 +1,10 @@
 package fh.mc.collaborativewriting;
 
+import android.annotation.TargetApi;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,14 +30,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
 import fh.mc.collaborativewriting.models.Friend;
 import fh.mc.collaborativewriting.models.User;
 
-public class FriendlistActivity extends AppCompatActivity {
+public class FriendlistActivity extends BaseActivity {
 
     private static final String TAG = "Friendlist";
 
@@ -344,7 +354,7 @@ public class FriendlistActivity extends AppCompatActivity {
         public void onBindViewHolder(final MyViewHolder holder, int position) {
             Friend friend = friendList.get(position);
             holder.usernameView.setText(friend.username);
-            // todo set profile picture
+            
             if (friend.acceptedFriend){
                 holder.acceptFriendView.setVisibility(View.GONE);
             }
@@ -366,7 +376,38 @@ public class FriendlistActivity extends AppCompatActivity {
                 }
             });
 
+            DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("users");
+            Query searchForUserPic = myRef.child(friend.userId).child("profilePic");
+            searchForUserPic.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    StorageReference profileReference = FirebaseStorage.getInstance().getReferenceFromUrl(String.valueOf(dataSnapshot.getValue()));
 
+
+
+                    final long ONE_MEGABYTE = 1024 * 1024;
+                    profileReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            // Data for profilePic is returned
+                            Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                            holder.profileView.setImageBitmap(getCroppedBitmap(bm, 100));
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle any errors
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
 
         @Override
@@ -415,9 +456,10 @@ public class FriendlistActivity extends AppCompatActivity {
         mAdapter.notifyItemRemoved(positionOfFriend);
     }
 
-    public String getUid() {
+    /*public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
+    */
 }
 
 
