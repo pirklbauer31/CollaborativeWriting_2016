@@ -354,7 +354,7 @@ public class FriendlistActivity extends BaseActivity {
         public void onBindViewHolder(final MyViewHolder holder, int position) {
             Friend friend = friendList.get(position);
             holder.usernameView.setText(friend.username);
-            
+
             if (friend.acceptedFriend){
                 holder.acceptFriendView.setVisibility(View.GONE);
             }
@@ -435,7 +435,8 @@ public class FriendlistActivity extends BaseActivity {
         friendToAccept.acceptedFriend = true;
 
         friendList.set(positionOfFriend, friendToAccept);
-        mAdapter.notifyItemChanged(positionOfFriend);
+        //mAdapter.notifyItemChanged(positionOfFriend);
+        mAdapter.notifyDataSetChanged();
     }
 
 
@@ -453,7 +454,8 @@ public class FriendlistActivity extends BaseActivity {
         mDataBase.child("users").child(friendToRemove.userId).child("friends").child(userId).removeValue();
 
         friendList.remove(positionOfFriend);
-        mAdapter.notifyItemRemoved(positionOfFriend);
+        //mAdapter.notifyItemRemoved(positionOfFriend);
+        mAdapter.notifyDataSetChanged();
     }
 
     /*public String getUid() {
