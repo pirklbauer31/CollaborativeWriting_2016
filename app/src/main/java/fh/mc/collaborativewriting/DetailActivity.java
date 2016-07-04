@@ -90,8 +90,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
         // Initialize Database
         mStoryReference = FirebaseDatabase.getInstance().getReference()
                 .child("stories").child(mStoryKey);
-        mUserStoryReference = FirebaseDatabase.getInstance().getReference()
-                .child("user-stories").child(getUid()).child(mStoryKey);
+
         mContributionReference = FirebaseDatabase.getInstance().getReference()
                 .child("stories-comments").child(mStoryKey);
         mUserStarredReference = FirebaseDatabase.getInstance().getReference().
@@ -157,6 +156,8 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 mStory = dataSnapshot.getValue(Story.class);
+                mUserStoryReference = FirebaseDatabase.getInstance().getReference()
+                        .child("user-stories").child(mStory.uid).child(mStoryKey);
                 // [START_EXCLUDE]
                 mAuthorView.setText(mStory.author);
                 mTitleView.setText(mStory.title);
