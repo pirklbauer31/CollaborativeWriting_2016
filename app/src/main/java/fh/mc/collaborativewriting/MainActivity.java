@@ -227,7 +227,7 @@ public class MainActivity extends BaseActivity
                         // Data for "testprofile.png" is returned
                         Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         img = (ImageView) findViewById(R.id.profilePic);
-                        bm = getCroppedBitmap(bm, 175);
+                        bm = getCroppedBitmap(bm, 150);
                         img.setImageBitmap(bm);
                         img.setOnClickListener(new View.OnClickListener() {
                             @Override
