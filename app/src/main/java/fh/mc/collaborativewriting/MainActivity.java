@@ -325,6 +325,7 @@ public class MainActivity extends BaseActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
+        /*
 
         int id = item.getItemId();
 
@@ -333,6 +334,7 @@ public class MainActivity extends BaseActivity
             return true;
         }
 
+        */
         return super.onOptionsItemSelected(item);
     }
 
@@ -353,11 +355,14 @@ public class MainActivity extends BaseActivity
             logOutUser();
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        }
+        /*
+        else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
         }
+        */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

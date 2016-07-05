@@ -120,7 +120,7 @@
             android:gravity="start|center"
             android:text="@string/inviteFriends"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            />
+            android:visibility="invisible" />
 
         <ListView
             android:layout_width="0dp"
@@ -129,7 +129,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_columnSpan="2"
             android:gravity="center"
-            android:id="@+id/selectFriends" />
+            android:id="@+id/selectFriends"
+            android:visibility="invisible" />
 
 
         <Button
@@ -139,7 +140,8 @@
             android:id="@+id/inputCreate"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:visibility="invisible" />
 
 
 

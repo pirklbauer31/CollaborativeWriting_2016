@@ -56,7 +56,7 @@
     <string name="contribute_to_this_story">Contribute to this story!</string>
     <string name="title_activity_story_detail">StoryDetailActivity</string>
     <string name="title_activity_login_chooser">LoginChooser</string>
-    <string name="title_activity_statistic">StatisticActivity</string>
+    <string name="title_activity_statistic">Statistics</string>
 
 
 </resources>
