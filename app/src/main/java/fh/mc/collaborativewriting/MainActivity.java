@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -48,13 +47,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import fh.mc.collaborativewriting.fragments.MyStoriesFragment;
 import fh.mc.collaborativewriting.fragments.RecentStoryFragment;
@@ -354,15 +346,9 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_logout) {
             logOutUser();
         } else if (id == R.id.nav_manage) {
-
+            Intent i = new Intent(getApplicationContext(), ToolsActivity.class);
+            startActivity(i);
         }
-        /*
-        else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-        */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

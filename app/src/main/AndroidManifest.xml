@@ -89,7 +89,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="fh.mc.collaborativewriting.MainActivity" />
         </activity>
-
         <activity
             android:name=".StatisticActivity"
             android:label="@string/title_activity_statistic"
@@ -99,14 +98,20 @@
                 android:value="fh.mc.collaborativewriting.MainActivity" />
         </activity>
 
-
-
         <receiver android:name=".NetworkStateReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".ToolsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="fh.mc.collaborativewriting.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
