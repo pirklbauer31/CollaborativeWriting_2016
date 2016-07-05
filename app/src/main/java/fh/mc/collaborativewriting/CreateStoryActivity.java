@@ -7,9 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -76,15 +74,9 @@ public class CreateStoryActivity extends BaseActivity {
 
         //  initialize_database_ref
         mDataBase = FirebaseDatabase.getInstance().getReference();
-        Button createStoryButton = (Button) findViewById(R.id.inputCreate);
 
 
-        createStoryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createStory();
-            }
-        });
+
 
     }
 
@@ -110,11 +102,7 @@ public class CreateStoryActivity extends BaseActivity {
         String selectedPrivacy = mFriendOnly.getSelectedItem().toString();
         final boolean friendsOnly;
 
-        //friendsOnly = !selectedPrivacy.equals("Public");
-        if(selectedPrivacy.equals("Public"))
-            friendsOnly = false;
-        else
-            friendsOnly = true;
+        friendsOnly = !selectedPrivacy.equals("Public");
 
 
         // [START single_value_read]

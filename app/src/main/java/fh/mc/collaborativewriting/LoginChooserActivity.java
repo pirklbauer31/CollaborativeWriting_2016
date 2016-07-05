@@ -10,7 +10,6 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * View represents only 2 Buttons to choose whether you want to sign in or register a new User
@@ -22,7 +21,6 @@ public class LoginChooserActivity extends BaseActivity {
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
-    private FirebaseDatabase mDatabase;
 
     private static final String TAG = "LoginChooserActivity";
     @Override
@@ -31,7 +29,6 @@ public class LoginChooserActivity extends BaseActivity {
 
         setContentView(R.layout.activity_login_chooser);
         mAuth= FirebaseAuth.getInstance();
-        mDatabase= FirebaseDatabase.getInstance();
 
         //Firebase logged on
         mAuthListener= new FirebaseAuth.AuthStateListener() {

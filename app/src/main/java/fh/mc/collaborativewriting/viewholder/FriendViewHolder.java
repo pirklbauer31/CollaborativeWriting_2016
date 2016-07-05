@@ -7,7 +7,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,10 +30,10 @@ import fh.mc.collaborativewriting.models.Friend;
  */
 public class FriendViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView usernameView;
-    public ImageView profileView;
-    public ImageButton acceptFriendView;
-    public ImageButton removeFriendView;
+    private TextView usernameView;
+    private ImageView profileView;
+    private ImageButton acceptFriendView;
+    private ImageButton removeFriendView;
 
     public FriendViewHolder (View itemView) {
         super(itemView);
@@ -77,7 +76,7 @@ public class FriendViewHolder extends RecyclerView.ViewHolder {
                     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                     @Override
                     public void onSuccess(byte[] bytes) {
-                        // Data for "testprofile.png" is returned
+                        // Data for profilePic is returned
                         Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         profileView.setImageBitmap(bm);
                     }

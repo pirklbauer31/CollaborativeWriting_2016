@@ -32,7 +32,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,9 +59,6 @@ public class MainActivity extends BaseActivity
     private static final String TAG = "MainActivity";
 
 
-    private TextView mEmailView;
-    private TextView mUsernameView;
-
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -70,9 +66,6 @@ public class MainActivity extends BaseActivity
     private StorageReference mStorageRef;
     private Uri mDownloadUrl = null;
 
-
-    private FragmentPagerAdapter mPagerAdapter;
-    private ViewPager mViewPager;
 
     private String mUserEmail;
     private String mUserName;
@@ -136,8 +129,7 @@ public class MainActivity extends BaseActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //TODO: add additional Fragments?
-        mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+        FragmentPagerAdapter mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[]{
                     new MyStoriesFragment(),
                     new RecentStoryFragment(),
@@ -171,7 +163,7 @@ public class MainActivity extends BaseActivity
 
 
         //Set up ViewPager
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mPagerAdapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -197,8 +189,8 @@ public class MainActivity extends BaseActivity
     }
 
     private void updateMenuProfileView(boolean updateActivity) {
-        mEmailView = (TextView) findViewById(R.id.emailView);
-        mUsernameView = (TextView) findViewById(R.id.usernameView);
+        TextView mEmailView = (TextView) findViewById(R.id.emailView);
+        TextView mUsernameView = (TextView) findViewById(R.id.usernameView);
         if (mUser != null) {
             if (mUser.getDisplayName() != null)
                 mUsernameView.setText(mUser.getDisplayName());
@@ -216,7 +208,7 @@ public class MainActivity extends BaseActivity
                     public void onSuccess(byte[] bytes) {
                         // Here, thisActivity is the current activity
 
-                        // Data for "testprofile.png" is returned
+                        // Data for profilePic is returned
                         Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         img = (ImageView) findViewById(R.id.profilePic);
                         bm = getCroppedBitmap(bm, 150);
@@ -303,7 +295,6 @@ public class MainActivity extends BaseActivity
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
-                return;
             //}
 
             // other 'case' lines to check for other
@@ -358,19 +349,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void onStop() {
         super.onStop();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://fh.mc.collaborativewriting/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
+
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -394,19 +373,6 @@ public class MainActivity extends BaseActivity
         mAuth.addAuthStateListener(mAuthListener);
 
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://fh.mc.collaborativewriting/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
     }
 
     private void logOutUser() {

@@ -6,11 +6,13 @@ import com.google.firebase.database.Query;
 /**
  * Created by Mark on 12.06.2016.
  */
+
+/**
+ * displays stories sorted by their creation time
+ */
 public class RecentStoryFragment extends StoryListFragment {
     @Override
     public Query getQuery(DatabaseReference databaseReference) {
-        //TODO: implement more Fragments
-        Query recentStories = databaseReference.child("stories").limitToFirst(30);
-        return recentStories;
+        return databaseReference.child("stories").limitToFirst(30);
     }
 }

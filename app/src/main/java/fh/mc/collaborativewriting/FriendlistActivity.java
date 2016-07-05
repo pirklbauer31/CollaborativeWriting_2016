@@ -4,9 +4,8 @@ import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +22,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +31,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,10 +46,8 @@ public class FriendlistActivity extends BaseActivity {
 
     //UI
     private EditText mInputFriendAdd;
-    private Button mSendFriendRequest;
 
     private List<Friend> friendList = new ArrayList<>();
-    private RecyclerView recyclerView;
     private FriendsAdapter mAdapter;
 
 
@@ -62,7 +57,7 @@ public class FriendlistActivity extends BaseActivity {
         setContentView(R.layout.activity_friendlist);
 
         mInputFriendAdd = (EditText) findViewById(R.id.inputAddFriend);
-        mSendFriendRequest = (Button) findViewById(R.id.cmdSendFriendRequest);
+        Button mSendFriendRequest = (Button) findViewById(R.id.cmdSendFriendRequest);
 
 
         //  initialize_database_ref
@@ -77,7 +72,7 @@ public class FriendlistActivity extends BaseActivity {
         });
 
         // prepare Recyclerview
-        recyclerView = (RecyclerView) findViewById(R.id.friend_recycler_view);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.friend_recycler_view);
 
         mAdapter = new FriendsAdapter(friendList);
         RecyclerView.LayoutManager mLayoutManger = new LinearLayoutManager(getApplicationContext());
@@ -141,7 +136,7 @@ public class FriendlistActivity extends BaseActivity {
      * @param userId The userId of the current user
      * @param friendId The userId of the user to add as friend
      */
-    public void writeNewFriend(final String userId, String friendId)
+    private void writeNewFriend(final String userId, String friendId)
     {
 
         mDataBase.child("users").child(userId).child("friends").child(friendId).setValue(true);
@@ -162,7 +157,7 @@ public class FriendlistActivity extends BaseActivity {
      * @param friendId The userId of the user to add as friend
      * @param friendUsername The username of the user to add as friend
      */
-    public void friendExists (final String userId, final String friendId, final String friendUsername)
+    private void friendExists(final String userId, final String friendId, final String friendUsername)
     {
        // Query friendExists = mDataBase.child("users").child(userId).child("friends").orderByChild(friendId);
         Query friendExists = mDataBase.child("users").child(userId).child("friends").child(friendId);
@@ -249,7 +244,7 @@ public class FriendlistActivity extends BaseActivity {
      * method "addFriendToList" with both values as parameters.
      *
      */
-    public void prepareFriendData()
+    private void prepareFriendData()
     {
         String userId = getUid();
         Query friendRef = mDataBase.child("users").child(userId).child("friends");
@@ -289,7 +284,7 @@ public class FriendlistActivity extends BaseActivity {
      * @param friendId The userId of the friend to add
      * @param friendAccepted Boolean value which describes if the friend-request has been answered
      */
-    public void addFriendToList (final String friendId, final boolean friendAccepted)
+    private void addFriendToList(final String friendId, final boolean friendAccepted)
     {
         Query singleFriendRef = mDataBase.child("users").child(friendId);
         singleFriendRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -425,7 +420,7 @@ public class FriendlistActivity extends BaseActivity {
      *
      * @param positionOfFriend The position of the friend in the RecyclerView
      */
-    public void acceptFriendRequest (int positionOfFriend)
+    private void acceptFriendRequest(int positionOfFriend)
     {
         Friend friendToAccept = friendList.get(positionOfFriend);
         String userId = getUid();
@@ -445,7 +440,7 @@ public class FriendlistActivity extends BaseActivity {
      * the UI.
      * @param positionOfFriend The position of the friend in the RecyclerView
      */
-    public void removeFriend (int positionOfFriend)
+    private void removeFriend(int positionOfFriend)
     {
         Friend friendToRemove = friendList.get(positionOfFriend);
         String userId = getUid();

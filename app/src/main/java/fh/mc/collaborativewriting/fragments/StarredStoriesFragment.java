@@ -6,11 +6,13 @@ import com.google.firebase.database.Query;
 /**
  * Created by Mark on 12.06.2016.
  */
+
+/**
+ * displays the followed stories
+ */
 public class StarredStoriesFragment extends StoryListFragment {
     @Override
     public Query getQuery(DatabaseReference databaseReference) {
-        //TODO: need to change database to work properly with only the stories "starred" by the user
-        Query starredStories = databaseReference.child("user-starred-stories").child(getUid());
-        return starredStories;
+        return databaseReference.child("user-starred-stories").child(getUid());
     }
 }

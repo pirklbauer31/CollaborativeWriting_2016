@@ -56,7 +56,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     private EditText mLastnameView;
 
 
-    private Resources res;
     private int[] userColors;
 
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -73,7 +72,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         //FacebookSdk.sdkInitialize(getApplicationContext());
 
         //get predefined userColors
-        res = getResources();
+        Resources res = getResources();
         userColors = res.getIntArray(R.array.usercolors);
 
 
@@ -145,7 +144,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
     }
 
-    void checkIfMailOrUser(){
+    private void checkIfMailOrUser() {
         if (Patterns.EMAIL_ADDRESS.matcher(mEmailView.getText().toString()).matches())
             signInUserWithEmail(mEmailView.getText().toString());
         else {
@@ -194,8 +193,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
      * @param givenMail The mail-address of the user to sign in
      */
     private void signInUserWithEmail(String givenMail) {
-
-        final String email= givenMail;
 
         if (validateEmailPassword()) {
 
@@ -374,7 +371,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
 
             User userObject= new User(username, email,firstname,lastname
-                    , "gs://project-cow.appspot.com/testProfile.png", userColors[(int) (Math.random() * userColors.length)]);
+                    , userColors[(int) (Math.random() * userColors.length)]);
             DatabaseReference myRef = mDatabase.getReference("users");
             myRef.child(uid).setValue(userObject);
         }

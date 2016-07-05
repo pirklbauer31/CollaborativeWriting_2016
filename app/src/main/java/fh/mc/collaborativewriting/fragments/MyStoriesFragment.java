@@ -6,6 +6,10 @@ import com.google.firebase.database.Query;
 /**
  * Created by Mark on 12.06.2016.
  */
+
+/**
+ * displays the stories created by the currently signed in user
+ */
 public class MyStoriesFragment extends StoryListFragment {
     @Override
     public Query getQuery(DatabaseReference databaseReference) {

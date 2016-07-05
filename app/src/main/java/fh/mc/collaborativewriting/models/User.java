@@ -19,6 +19,10 @@ public class User {
 
     public int userColor = Color.BLUE;
 
+    public User(String username, String email, String firstname, String lastname, int userColor) {
+        this(username, email, firstname, lastname, "gs://project-cow.appspot.com/testProfile.png", userColor);
+    }
+
     public User(String username, String email, String firstname, String lastname, String profilePic, int userColor) {
         this.username = username;
         this.email= email;

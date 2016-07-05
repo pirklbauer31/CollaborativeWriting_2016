@@ -1,8 +1,6 @@
 package fh.mc.collaborativewriting;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
@@ -24,10 +22,6 @@ public class StatisticActivity extends AppCompatActivity {
 
     private static final String TAG = "StatisticsActivity";
 
-    /**
-     * Firebase Parameters to connect to Database and get User
-     */
-    private DatabaseReference mDatabase;
     private FirebaseUser mUser;
 
     /**
@@ -46,7 +40,10 @@ public class StatisticActivity extends AppCompatActivity {
         setContentView(R.layout.activity_statistic);
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        /*
+      Firebase Parameters to connect to Database and get User
+     */
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mActiveUsers = (TextView) findViewById(R.id.activeUsers);
         mStories = (TextView) findViewById(R.id.stories);

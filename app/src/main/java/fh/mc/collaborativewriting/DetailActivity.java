@@ -467,8 +467,7 @@ public class DetailActivity extends BaseActivity implements View.OnClickListener
                         }
 
 
-
-                        String[] options= commentOptions.toArray(new String[0]);
+                        String[] options = commentOptions.toArray(new String[commentOptions.size()]);
                         builder.setTitle("Author: "+ contribution.author)
                                 .setItems(options, new DialogInterface.OnClickListener() {
                                     @Override

@@ -10,7 +10,6 @@ import java.util.Map;
 /**
  * Created by Mark on 13.06.2016.
  */
-//TODO: Find better name LOL
 @IgnoreExtraProperties
 public class Contribution {
     public String author;

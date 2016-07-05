@@ -35,12 +35,13 @@ import fh.mc.collaborativewriting.models.Story;
  */
 public class StoryViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView titleView;
-    public TextView descriptionView;
-    public TextView authorView;
-    public TextView numberOfStarsView;
+    //UI references
+    private TextView titleView;
+    private TextView descriptionView;
+    private TextView authorView;
+    private TextView numberOfStarsView;
     public ImageView starView;
-    public ImageView profileView;
+    private ImageView profileView;
 
     public StoryViewHolder(View itemView) {
         super(itemView);
@@ -110,7 +111,7 @@ public class StoryViewHolder extends RecyclerView.ViewHolder {
      *
      * @param bmp    the original bitmap
      * @param radius radius of the new round bitmap
-     * @return
+     * @return the cropped and rounded bitmap
      */
     private static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {
         Bitmap sbmp;

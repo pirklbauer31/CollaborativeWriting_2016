@@ -23,7 +23,7 @@ public class BaseActivity extends AppCompatActivity {
      * Get the unique ID from the currently signed in user
      * @return returns UID from current user
      */
-    public static String getUid() {
+    static String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
@@ -34,7 +34,7 @@ public class BaseActivity extends AppCompatActivity {
      * @param radius radius of the new round bitmap
      * @return
      */
-    public static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {
+    static Bitmap getCroppedBitmap(Bitmap bmp, int radius) {
         Bitmap sbmp;
         if (bmp.getWidth() != radius || bmp.getHeight() != radius)
             sbmp = Bitmap.createScaledBitmap(bmp, radius, radius, false);
@@ -44,7 +44,6 @@ public class BaseActivity extends AppCompatActivity {
                 sbmp.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
 
-        final int color = 0xffa19774;
         final Paint paint = new Paint();
         final Rect rect = new Rect(0, 0, sbmp.getWidth(), sbmp.getHeight());
 
@@ -66,7 +65,7 @@ public class BaseActivity extends AppCompatActivity {
      * Check if the user is connected to the internet
      * @return returns true if user is online
      */
-    public boolean isOnline() {
+    boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();

@@ -23,6 +23,8 @@ import fh.mc.collaborativewriting.viewholder.StoryViewHolder;
 /**
  * Created by mar k on 11.06.2016.
  */
+
+
 public abstract class StoryListFragment extends Fragment {
 
     private static final String TAG = "StoryListFragment";
@@ -32,8 +34,6 @@ public abstract class StoryListFragment extends Fragment {
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
 
-    private String storyKey;
-    private Story mStory;
     public StoryListFragment() {
     }
 
@@ -107,9 +107,15 @@ public abstract class StoryListFragment extends Fragment {
      * Get the unique ID from the currently signed in user
      * @return returns UID from current user
      */
-    public String getUid() {
+    String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    public abstract Query getQuery(DatabaseReference databaseReference);
+    /**
+     * Define the DatabaseReference from where you want to get your stories to fill the fragment
+     *
+     * @param databaseReference The path of the stories to be displayed
+     * @return the Query to be used for your fragment
+     */
+    protected abstract Query getQuery(DatabaseReference databaseReference);
 }
