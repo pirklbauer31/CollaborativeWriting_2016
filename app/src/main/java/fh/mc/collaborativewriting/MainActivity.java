@@ -147,9 +147,9 @@ public class MainActivity extends BaseActivity
 
             private final String[] mFragmentNames = new String[]{
                     "My Stories",
-                    "New Stories",
-                    "Top Stories",
-                    "Followed Stories"
+                    "New",
+                    "Top",
+                    "Followed"
             };
 
 
