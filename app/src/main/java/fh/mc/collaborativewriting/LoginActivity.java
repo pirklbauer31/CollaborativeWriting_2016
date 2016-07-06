@@ -12,6 +12,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -114,6 +117,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         mEmailRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                showProgress(true);
                 checkIfUserExists();
             }
         });
@@ -124,6 +128,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                showProgress(true);
                 checkIfMailOrUser();
             }
         });
@@ -160,7 +165,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
 
 
     /**
-     * Validates if email and passwort are not empty and password-length > 4 characters
+     * Validates if email and passwort are not empty and password-length > 5 characters
      * @return true if correct, false if not.
      */
     private boolean validateEmailPassword () {
@@ -177,7 +182,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             focusView=mEmailView;
         }
 
-        else if (password.isEmpty() || password.length() < 4 ) {
+        else if (password.isEmpty() || password.length() < 5 ) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             valid = false;
         }
@@ -209,6 +214,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                                     Log.w(TAG, "signInWithEmail", task.getException());
                                     Toast.makeText(LoginActivity.this, "Email doesnt exist",
                                             Toast.LENGTH_SHORT).show();
+                                    showProgress(false);
                                 }
                             }
                         });
@@ -226,16 +232,19 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User searchedUser = dataSnapshot.getValue(User.class);
-
+                boolean foundUser = false;
 
                 for (DataSnapshot userSnapshot: dataSnapshot.getChildren()
                      ) {
 
                     if (userSnapshot.child("username").getValue().toString().contentEquals(mEmailView.getText().toString())) {
-
+                        foundUser=true;
                         signInUserWithEmail(userSnapshot.child("email").getValue().toString());
                     }
                 }
+                showProgress(foundUser);
+                if(!foundUser)
+                    Toast.makeText(getApplicationContext(),"Username not found!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -374,6 +383,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                     , userColors[(int) (Math.random() * userColors.length)]);
             DatabaseReference myRef = mDatabase.getReference("users");
             myRef.child(uid).setValue(userObject);
+            showProgress(false);
         }
     }
 
@@ -394,7 +404,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     /**
      * Shows the progress UI and hides the login form.
      */
-    //TODO: nd so schirche Animation finden, wenn möglich
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
